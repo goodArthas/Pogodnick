@@ -18,7 +18,19 @@ android {
             useSupportLibrary true
         }
     }
-
+    flavorDimensions "version"
+    productFlavors {
+        demo {
+            dimension "version"
+            applicationIdSuffix ".demo"
+            versionNameSuffix "-demo"
+        }
+        full {
+            dimension "version"
+            applicationIdSuffix ".full"
+            versionNameSuffix "-full"
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -68,7 +80,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
 
     //koin
-    ext.koin_version= "3.1.4"
+    ext.koin_version = "3.1.4"
     implementation "io.insert-koin:koin-android:$koin_version"
     implementation "io.insert-koin:koin-androidx-compose:$koin_version"
 

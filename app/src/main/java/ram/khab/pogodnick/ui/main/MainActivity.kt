@@ -1,4 +1,4 @@
-package ram.khab.pogodnick
+package ram.khab.pogodnick.ui.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import org.koin.androidx.compose.getViewModel
+import ram.khab.pogodnick.R
 import ram.khab.pogodnick.model.pojo.CardWeather
 import ram.khab.pogodnick.ui.fontDimensionResource
 import ram.khab.pogodnick.ui.theme.PogodnickTheme
