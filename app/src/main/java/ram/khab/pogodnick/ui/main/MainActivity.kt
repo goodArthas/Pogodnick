@@ -10,10 +10,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -25,19 +24,29 @@ import org.koin.androidx.compose.getViewModel
 import ram.khab.pogodnick.R
 import ram.khab.pogodnick.model.pojo.CardWeather
 import ram.khab.pogodnick.ui.fontDimensionResource
-import ram.khab.pogodnick.ui.theme.PogodnickTheme
-import ram.khab.pogodnick.ui.theme.PurpleLight
-import ram.khab.pogodnick.ui.theme.Shapes
-import ram.khab.pogodnick.ui.theme.White
+import ram.khab.pogodnick.ui.theme.*
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             PogodnickTheme {
-                Column(Modifier.background(PurpleLight)) {
-                    TopBar()
-                    CitiesList()
+                Scaffold(
+                    floatingActionButton = {
+                        FloatingActionButton(onClick = {
+                            /*TODO*/
+                        }) {
+                            Icon(
+                                imageVector = Icons.Filled.Add,
+                                contentDescription = stringResource(id = R.string.add_city)
+                            )
+                        }
+                    }
+                ) {
+                    Column(Modifier.background(PurpleLight)) {
+                        TopBar()
+                        CitiesList()
+                    }
                 }
             }
         }
@@ -46,9 +55,13 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun TopBar() {
-    TopAppBar(title = {
-        Text(text = stringResource(id = R.string.weather_in_cities))
-    })
+    TopAppBar(
+        title = {
+            Text(text = stringResource(id = R.string.weather_in_cities))
+        },
+        backgroundColor = PurpleBase,
+        contentColor = White
+    )
 }
 
 @Composable
