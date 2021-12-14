@@ -43,7 +43,11 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 ) {
-                    Column(Modifier.background(PurpleLight)) {
+                    Column(
+                        modifier = Modifier
+                            .background(PurpleLight)
+                            .fillMaxHeight()
+                    ) {
                         TopBar()
                         CitiesList()
                     }

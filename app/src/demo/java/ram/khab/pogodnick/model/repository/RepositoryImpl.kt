@@ -1,22 +1,25 @@
 package ram.khab.pogodnick.model.pojo.repository
 
 import ram.khab.pogodnick.model.pojo.CardWeather
+import ram.khab.pogodnick.model.repository.LocalDataSource
 import ram.khab.pogodnick.model.repository.Repository
 
-class RepositoryImpl : Repository {
+class RepositoryImpl(
+    private val localRepo: LocalDataSource
+) : Repository {
 
-    override suspend fun getWeather(cityName: String): List<CardWeather> = listOf<CardWeather>(
-        CardWeather("Москва", "-5", false),
-        CardWeather("Елабуга", "-6", true),
-        /* CardWeather("Кукмор", "16", false),
-         CardWeather("Москва", "-3", true),
-         CardWeather("Питер", "9", true),
-         CardWeather("Кавказ", "-1", false),
-         CardWeather("Сочи", "0", true),
-         CardWeather("Пермь", "4", false),
-         CardWeather("Нижний новгород", "4", false),
-         CardWeather("Бетьки", "4", false),
-         CardWeather("Игенче", "4", false),*/
-    )
+    override suspend fun getWeatherByCityName(cityName: String): CardWeather {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getAllWeather(): List<CardWeather> = localRepo.getAllWeather()
+
+    override suspend fun deleteWeatherByCityName(cityName: String) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun saveWeather(cityName: CardWeather) {
+        TODO("Not yet implemented")
+    }
 
 }

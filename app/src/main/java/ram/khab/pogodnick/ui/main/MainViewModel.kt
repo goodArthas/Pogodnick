@@ -17,8 +17,7 @@ class MainViewModel(
 
     fun fetch() {
         viewModelScope.launch {
-            _weatherCardsData.postValue(repository.getWeather(""))
-
+            _weatherCardsData.postValue(repository.getAllWeather())
         }
     }
 
