@@ -3,21 +3,29 @@ package ram.khab.pogodnick
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
+import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import org.koin.androidx.compose.getViewModel
 import ram.khab.pogodnick.model.pojo.CardWeather
 import ram.khab.pogodnick.ui.fontDimensionResource
 import ram.khab.pogodnick.ui.theme.PogodnickTheme
+import ram.khab.pogodnick.ui.theme.PurpleLight
 import ram.khab.pogodnick.ui.theme.Shapes
 import ram.khab.pogodnick.ui.theme.White
 
@@ -26,7 +34,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PogodnickTheme {
-                TopBar()
+                Column(Modifier.background(PurpleLight)) {
+                    TopBar()
+                    CitiesList()
+                }
             }
         }
     }
@@ -48,7 +59,7 @@ fun CityItem(weather: CardWeather) {
     ) {
         val iconSize = dimensionResource(R.dimen.icon_size_small)
         val fontSize = fontDimensionResource(R.dimen.text_size)
-        val padding = dimensionResource(R.dimen.paddingStandart)
+        val padding = dimensionResource(R.dimen.padding_standart)
 
         var thumbIconLiked by remember {
             mutableStateOf(weather.favorite)
@@ -56,7 +67,7 @@ fun CityItem(weather: CardWeather) {
 
         val iconheart = if (thumbIconLiked) R.drawable.press_heart else R.drawable.heart
 
-        Column() {
+        Column {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
@@ -72,6 +83,7 @@ fun CityItem(weather: CardWeather) {
                     modifier = Modifier.padding(padding)
                 )
             }
+            Divider()
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
@@ -103,11 +115,28 @@ fun CityItem(weather: CardWeather) {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun CitiesList() {
+    val vm = getViewModel<MainViewModel>()
+    val listCard: List<CardWeather> by vm.weatherCardsData.observeAsState(listOf())
+    vm.fetch()
+
+    val padding = dimensionResource(id = R.dimen.padding_standart)
+    LazyColumn(
+        contentPadding = PaddingValues(horizontal = padding, vertical = padding),
+        verticalArrangement = Arrangement.spacedBy(padding)
+    ) {
+        items(listCard) { card ->
+            CityItem(weather = card)
+        }
+    }
+}
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     PogodnickTheme {
-        CityItem(CardWeather("Челны", "-5", true))
+        CitiesList()
     }
 }
