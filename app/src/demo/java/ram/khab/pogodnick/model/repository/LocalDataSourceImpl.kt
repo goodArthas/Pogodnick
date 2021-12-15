@@ -23,15 +23,8 @@ class LocalDataSourceImpl(
 
     override suspend fun getAllWeather(): List<CardWeather> = list
 
-    override suspend fun deleteWeatherByCityName(cityName: String) {
-        var cardWeather = CardWeather(0, "Москва", "-5", false)
-        list.forEach {
-            if (it.cityName == cityName) {
-                cardWeather = it
-                return@forEach
-            }
-        }
-        list.remove(cardWeather)
+    override suspend fun deleteWeather(city: CardWeather) {
+        list.remove(city)
     }
 
     override suspend fun saveWeather(cardWeather: CardWeather) {

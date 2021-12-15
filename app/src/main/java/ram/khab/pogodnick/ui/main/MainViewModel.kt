@@ -9,17 +9,27 @@ import ram.khab.pogodnick.model.pojo.CardWeather
 import ram.khab.pogodnick.model.repository.Repository
 
 class MainViewModel(
-    val repository: Repository
+    private val repository: Repository
 ) : ViewModel() {
 
     private val _weatherCardsData: MutableLiveData<List<CardWeather>> = MutableLiveData()
     val weatherCardsData: LiveData<List<CardWeather>> = _weatherCardsData
 
-    fun fetch() {
+    init {
         viewModelScope.launch {
-            _weatherCardsData.postValue(repository.getAllWeather())
+            fetchData()
         }
     }
 
+    private suspend fun fetchData() {
+        _weatherCardsData.postValue(repository.getAllWeather().toList())
+    }
+
+    fun deleteWeatherCard(city: CardWeather) {
+        viewModelScope.launch {
+            repository.deleteWeather(city)
+            fetchData()
+        }
+    }
 
 }

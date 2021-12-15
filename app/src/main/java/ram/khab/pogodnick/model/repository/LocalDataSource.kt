@@ -4,6 +4,6 @@ import ram.khab.pogodnick.model.pojo.CardWeather
 
 interface LocalDataSource {
     suspend fun getAllWeather(): List<CardWeather>
-    suspend fun deleteWeatherByCityName(cityName: String)
+    suspend fun deleteWeather(city: CardWeather)
     suspend fun saveWeather(cardWeather: CardWeather)
 }

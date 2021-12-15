@@ -70,6 +70,7 @@ fun TopBar() {
 
 @Composable
 fun CityItem(weather: CardWeather) {
+    val mainVm = getViewModel<MainViewModel>()
     Card(
         shape = Shapes.large,
         backgroundColor = White,
@@ -123,7 +124,7 @@ fun CityItem(weather: CardWeather) {
                         .height(iconSize)
                         .width(iconSize)
                         .clickable {
-
+                            mainVm.deleteWeatherCard(weather)
                         },
                     painter = painterResource(id = R.drawable.trash_can),
                     contentDescription = stringResource(id = R.string.delete_city),
@@ -136,9 +137,8 @@ fun CityItem(weather: CardWeather) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CitiesList() {
-    val vm = getViewModel<MainViewModel>()
-    val listCard: List<CardWeather> by vm.weatherCardsData.observeAsState(listOf())
-    vm.fetch()
+    val mainVm = getViewModel<MainViewModel>()
+    val listCard: List<CardWeather> by mainVm.weatherCardsData.observeAsState(listOf())
 
     val padding = dimensionResource(id = R.dimen.padding_standart)
     LazyColumn(

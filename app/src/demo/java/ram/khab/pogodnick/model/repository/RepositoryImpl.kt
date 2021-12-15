@@ -14,8 +14,8 @@ class RepositoryImpl(
 
     override suspend fun getAllWeather(): List<CardWeather> = localRepo.getAllWeather()
 
-    override suspend fun deleteWeatherByCityName(cityName: String) {
-        TODO("Not yet implemented")
+    override suspend fun deleteWeather(city: CardWeather) {
+        localRepo.deleteWeather(city)
     }
 
     override suspend fun saveWeather(cityName: CardWeather) {
