@@ -32,10 +32,11 @@ class MainViewModel(
         }
     }
 
-    fun addCity(cardWeather: CardWeather) {
+    fun addCity(cityName: String) {
         viewModelScope.launch {
-            repository.saveWeather(cardWeather)
-            _weatherCardsData.postValue(listOf(repository.getWeatherByCityName(cardWeather.cityName)))
+            val result = repository.getWeatherByCityName(cityName)
+            repository.saveWeather(result)
+            _weatherCardsData.postValue(repository.getAllWeather().toList())
         }
     }
 

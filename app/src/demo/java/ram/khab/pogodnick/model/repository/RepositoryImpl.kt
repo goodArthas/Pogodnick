@@ -12,7 +12,13 @@ class RepositoryImpl(
 
     override suspend fun getWeatherByCityName(cityName: String): CardWeather {
         val weather = remoteDataSource.requestWeatherByCityName(cityName)
-        return CardWeather(0, weather.city.name, weather.list[0].main.temp.toString(), true)
+        return CardWeather(
+            0,
+            weather.city.name,
+            weather.list[0].main.temp.toString(),
+            false
+        )
+
     }
 
     override suspend fun getAllWeather(): List<CardWeather> = localRepo.getAllWeather()

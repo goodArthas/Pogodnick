@@ -19,9 +19,14 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import org.koin.androidx.compose.getViewModel
 import ram.khab.pogodnick.R
 import ram.khab.pogodnick.model.pojo.CardWeather
+import ram.khab.pogodnick.ui.CityAdd.CityAddScreen
 import ram.khab.pogodnick.ui.fontDimensionResource
 import ram.khab.pogodnick.ui.theme.PogodnickTheme
 import ram.khab.pogodnick.ui.theme.PurpleBase
@@ -32,32 +37,47 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            PogodnickTheme {
-                val mainVm = getViewModel<MainViewModel>()
-                Scaffold(
-                    floatingActionButton = {
-                        FloatingActionButton(onClick = {
-                            mainVm.addCity(CardWeather(0, "Казань", "", true))
-                        }) {
-                            Icon(
-                                imageVector = Icons.Filled.Add,
-                                contentDescription = stringResource(id = R.string.add_city)
-                            )
-                        }
-                    }
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                    ) {
-                        TopBar()
-                        CitiesList()
-                    }
-                }
+            val navController = rememberNavController()
+            val mainVm = getViewModel<MainViewModel>()
+            NavHost(navController = navController, startDestination = "main") {
+                composable("main") { WeatherInTheCities(navController, mainVm) }
+                composable("addCity") { CityAddScreen(navController, mainVm) }
             }
         }
     }
 }
+
+@Composable
+fun WeatherInTheCities(navController: NavController, mainVm: MainViewModel) {
+    PogodnickTheme {
+        Scaffold(
+            floatingActionButton = {
+                Fab(navController)
+            }
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+            ) {
+                TopBar()
+                CitiesList(mainVm)
+            }
+        }
+    }
+}
+
+@Composable
+fun Fab(navController: NavController) {
+    FloatingActionButton(onClick = {
+        navController.navigate("addCity")
+    }) {
+        Icon(
+            imageVector = Icons.Filled.Add,
+            contentDescription = stringResource(id = R.string.add_city)
+        )
+    }
+}
+
 
 @Composable
 fun TopBar() {
@@ -71,8 +91,8 @@ fun TopBar() {
 }
 
 @Composable
-fun CityItem(weather: CardWeather) {
-    val mainVm = getViewModel<MainViewModel>()
+fun CityItem(weather: CardWeather, mainVm: MainViewModel) {
+
     Card(
         shape = Shapes.large,
         backgroundColor = White,
@@ -138,8 +158,7 @@ fun CityItem(weather: CardWeather) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CitiesList() {
-    val mainVm = getViewModel<MainViewModel>()
+fun CitiesList(mainVm: MainViewModel) {
     val listCard: List<CardWeather> by mainVm.weatherCardsData.observeAsState(listOf())
 
     val padding = dimensionResource(id = R.dimen.padding_standart)
@@ -148,10 +167,11 @@ fun CitiesList() {
         verticalArrangement = Arrangement.spacedBy(padding)
     ) {
         items(listCard) { card ->
-            CityItem(weather = card)
+            CityItem(weather = card, mainVm)
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

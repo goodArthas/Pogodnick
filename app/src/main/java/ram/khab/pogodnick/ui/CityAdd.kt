@@ -5,30 +5,41 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import ram.khab.pogodnick.R
-import ram.khab.pogodnick.ui.CityAdd.CityAddScreen
+import ram.khab.pogodnick.ui.main.MainViewModel
 import ram.khab.pogodnick.ui.theme.*
 
 object CityAdd {
 
     @Composable
-    fun CityAddScreen() {
-        var text: String = ""
+    fun CityAddScreen(navController: NavController, mainViewModel: MainViewModel) {
         PogodnickTheme {
-            Column {
-                MyAppBar()
-                InputText() {
-                    text = it
-                }
-                Column(Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Bottom) {
-                    Row(verticalAlignment = Alignment.Bottom) {
-                        AddButton()
+            var text by rememberSaveable { mutableStateOf("") }
+
+            PogodnickTheme {
+                Column {
+                    MyAppBar()
+                    InputText() {
+                        text = it
+                    }
+                    Column(Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Bottom) {
+                        Row(verticalAlignment = Alignment.Bottom) {
+                            AddButton() {
+                                mainViewModel.addCity(text)
+                                navController.popBackStack()
+                            }
+                        }
                     }
                 }
             }
@@ -58,27 +69,34 @@ object CityAdd {
     private fun InputText(changeTest: (String) -> Unit) {
         val padding = dimensionResource(id = R.dimen.padding_standart)
         val mediumPadding = dimensionResource(id = R.dimen.padding_medium)
-        OutlinedTextField(
+        var text by rememberSaveable { mutableStateOf("") }
+
+        TextField(
             shape = Shapes.large,
-            value = stringResource(id = R.string.enter_city_name),
-            onValueChange = { changeTest(it) },
-            textStyle = TextStyle(color = BlackTextHint),
+            value = text,
+            onValueChange = {
+                text = it
+                changeTest(it)
+            },
+            textStyle = TextStyle(color = BlackText),
             modifier = Modifier
                 .padding(horizontal = padding)
                 .padding(top = mediumPadding)
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            singleLine = true,
+            label = { Text(stringResource(id = R.string.enter_city_name)) }
         )
     }
 
     @Composable
-    private fun AddButton() {
+    private fun AddButton(click: () -> Unit) {
         val padding = dimensionResource(id = R.dimen.padding_standart)
         val mediumPadding = dimensionResource(id = R.dimen.padding_large)
         val buttonTextSize = fontDimensionResource(id = R.dimen.button_text_size)
         val buttonHeightSize = dimensionResource(id = R.dimen.button_height_size)
         Button(
             onClick = {
-
+                click()
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -96,7 +114,7 @@ object CityAdd {
 @Composable
 fun CityAddScreenPreview() {
     Column {
-        CityAddScreen()
+
     }
 }
 
