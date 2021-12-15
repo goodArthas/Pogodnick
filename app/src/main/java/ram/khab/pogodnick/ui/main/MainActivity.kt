@@ -31,10 +31,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PogodnickTheme {
+                val mainVm = getViewModel<MainViewModel>()
                 Scaffold(
                     floatingActionButton = {
                         FloatingActionButton(onClick = {
-                            /*TODO*/
+                            mainVm.addCity(CardWeather(0, "Казань", "", true))
                         }) {
                             Icon(
                                 imageVector = Icons.Filled.Add,

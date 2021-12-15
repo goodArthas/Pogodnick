@@ -2,14 +2,17 @@ package ram.khab.pogodnick.model.pojo.repository
 
 import ram.khab.pogodnick.model.pojo.CardWeather
 import ram.khab.pogodnick.model.repository.LocalDataSource
+import ram.khab.pogodnick.model.repository.RemoteDataSource
 import ram.khab.pogodnick.model.repository.Repository
 
 class RepositoryImpl(
-    private val localRepo: LocalDataSource
+    private val localRepo: LocalDataSource,
+    private val remoteDataSource: RemoteDataSource
 ) : Repository {
 
     override suspend fun getWeatherByCityName(cityName: String): CardWeather {
-        TODO("Not yet implemented")
+        val weather = remoteDataSource.requestWeatherByCityName(cityName)
+        return CardWeather(0, weather.city.name, weather.list[0].main.temp.toString(), true)
     }
 
     override suspend fun getAllWeather(): List<CardWeather> = localRepo.getAllWeather()
@@ -18,8 +21,8 @@ class RepositoryImpl(
         localRepo.deleteWeather(city)
     }
 
-    override suspend fun saveWeather(cityName: CardWeather) {
-        TODO("Not yet implemented")
+    override suspend fun saveWeather(city: CardWeather) {
+        localRepo.saveWeather(city)
     }
 
 }

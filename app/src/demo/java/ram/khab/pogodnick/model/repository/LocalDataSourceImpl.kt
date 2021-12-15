@@ -8,10 +8,6 @@ class LocalDataSourceImpl(
 ) : LocalDataSource {
 
     private val list = mutableListOf<CardWeather>(
-        CardWeather(0, "Москва", "-5", false),
-        CardWeather(0, "Елабуга", "-6", true),
-        CardWeather(0, "Кукмор", "16", false),
-        CardWeather(0, "Москва", "-3", true),
         /*CardWeather("Питер", "9", true),
         CardWeather("Кавказ", "-1", false),
         CardWeather("Сочи", "0", true),
