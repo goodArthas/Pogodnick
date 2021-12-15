@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,7 +23,10 @@ import org.koin.androidx.compose.getViewModel
 import ram.khab.pogodnick.R
 import ram.khab.pogodnick.model.pojo.CardWeather
 import ram.khab.pogodnick.ui.fontDimensionResource
-import ram.khab.pogodnick.ui.theme.*
+import ram.khab.pogodnick.ui.theme.PogodnickTheme
+import ram.khab.pogodnick.ui.theme.PurpleBase
+import ram.khab.pogodnick.ui.theme.Shapes
+import ram.khab.pogodnick.ui.theme.White
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +48,6 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Column(
                         modifier = Modifier
-                            .background(PurpleLight)
                             .fillMaxHeight()
                     ) {
                         TopBar()
@@ -155,7 +156,5 @@ fun CitiesList() {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    PogodnickTheme {
-        CitiesList()
-    }
+
 }
