@@ -1,4 +1,4 @@
-package ram.khab.pogodnick.screens.main
+package ram.khab.pogodnick.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -18,9 +18,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import ram.khab.pogodnick.R
+import ram.khab.pogodnick.model.Screens
 import ram.khab.pogodnick.model.pojo.CardWeather
-import ram.khab.pogodnick.screens.main.WeatherInCities.CityItem
-import ram.khab.pogodnick.screens.main.WeatherInCities.TopBar
+import ram.khab.pogodnick.screens.WeatherInCities.CityItem
+import ram.khab.pogodnick.screens.WeatherInCities.TopBar
+import ram.khab.pogodnick.screens.main.MainViewModel
+
 import ram.khab.pogodnick.ui.fontDimensionResource
 import ram.khab.pogodnick.ui.theme.PogodnickTheme
 import ram.khab.pogodnick.ui.theme.PurpleBase
@@ -34,7 +37,7 @@ object WeatherInCities {
             Scaffold(
                 floatingActionButton = {
                     FloatingActionButton(onClick = {
-                        navController.navigate("addCity")
+                        navController.navigate(Screens.CityAddScreen)
                     }) {
                         Icon(
                             imageVector = Icons.Filled.Add,
