@@ -17,6 +17,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import ram.khab.pogodnick.R
+import ram.khab.pogodnick.ui.CityAdd.InputText
+import ram.khab.pogodnick.ui.CityAdd.MyAppBar
 import ram.khab.pogodnick.ui.main.MainViewModel
 import ram.khab.pogodnick.ui.theme.*
 
@@ -26,7 +28,6 @@ object CityAdd {
     fun CityAddScreen(navController: NavController, mainViewModel: MainViewModel) {
         PogodnickTheme {
             var text by rememberSaveable { mutableStateOf("") }
-
             PogodnickTheme {
                 Column {
                     MyAppBar()
@@ -35,9 +36,31 @@ object CityAdd {
                     }
                     Column(Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Bottom) {
                         Row(verticalAlignment = Alignment.Bottom) {
-                            AddButton() {
-                                mainViewModel.saveCity(text)
-                                navController.popBackStack()
+                            val padding = dimensionResource(id = R.dimen.padding_standart)
+                            val mediumPadding = dimensionResource(id = R.dimen.padding_large)
+                            val buttonTextSize =
+                                fontDimensionResource(id = R.dimen.button_text_size)
+                            val buttonHeightSize =
+                                dimensionResource(id = R.dimen.button_height_size)
+
+                            Button(
+                                onClick = {
+                                    mainViewModel.saveCity(text)
+                                    navController.popBackStack()
+                                },
+
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = padding, end = padding, bottom = mediumPadding)
+                                    .height(buttonHeightSize),
+                                enabled = text.length > 3
+
+                            )
+                            {
+                                Text(
+                                    text = stringResource(id = R.string.add),
+                                    fontSize = buttonTextSize
+                                )
                             }
                         }
                     }
@@ -47,7 +70,7 @@ object CityAdd {
     }
 
     @Composable
-    private fun MyAppBar() {
+    fun MyAppBar() {
         val padding = dimensionResource(id = R.dimen.padding_standart)
         TopAppBar(
             title = {
@@ -66,7 +89,7 @@ object CityAdd {
     }
 
     @Composable
-    private fun InputText(changeTest: (String) -> Unit) {
+    fun InputText(changeTest: (String) -> Unit) {
         val padding = dimensionResource(id = R.dimen.padding_standart)
         val mediumPadding = dimensionResource(id = R.dimen.padding_medium)
         var text by rememberSaveable { mutableStateOf("") }
@@ -88,33 +111,25 @@ object CityAdd {
         )
     }
 
-    @Composable
-    private fun AddButton(click: () -> Unit) {
-        val padding = dimensionResource(id = R.dimen.padding_standart)
-        val mediumPadding = dimensionResource(id = R.dimen.padding_large)
-        val buttonTextSize = fontDimensionResource(id = R.dimen.button_text_size)
-        val buttonHeightSize = dimensionResource(id = R.dimen.button_height_size)
-        Button(
-            onClick = {
-                click()
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = padding, end = padding, bottom = mediumPadding)
-                .height(buttonHeightSize)
-        )
-        {
-            Text(text = stringResource(id = R.string.add), fontSize = buttonTextSize)
-        }
-    }
-
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun CityAddScreenPreview() {
     Column {
+        PogodnickTheme {
+            Column {
+                MyAppBar()
+                InputText() {
 
+                }
+                Column(Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Bottom) {
+                    Row(verticalAlignment = Alignment.Bottom) {
+
+                    }
+                }
+            }
+        }
     }
 }
 

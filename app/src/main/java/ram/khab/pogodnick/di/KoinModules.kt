@@ -41,7 +41,9 @@ val repositoryModule = module {
         val interceptor = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
-        val okHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
+        val okHttpClient = OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .build()
         Retrofit.Builder()
             .baseUrl(get<String>(qualifier = named("base_url")))
             .addConverterFactory(GsonConverterFactory.create())
