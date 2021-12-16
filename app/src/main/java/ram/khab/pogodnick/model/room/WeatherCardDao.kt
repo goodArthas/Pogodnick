@@ -1,6 +1,7 @@
 package ram.khab.pogodnick.model.room
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import ram.khab.pogodnick.model.pojo.CardWeather
@@ -10,10 +11,10 @@ interface WeatherCardDao {
     @Query("SELECT * FROM cardweather")
     suspend fun getAll(): List<CardWeather>
 
-    @Query("DELETE FROM cardweather WHERE cityName = :cityName")
-    suspend fun delete(cityName: String)
+    @Delete()
+    suspend fun delete(cityCardWeather: CardWeather)
 
     @Insert
-    suspend fun saveWeather(cityCardWeather: CardWeather)
+    suspend fun save(cityCardWeather: CardWeather)
 
 }

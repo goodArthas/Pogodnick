@@ -6,11 +6,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import ram.khab.pogodnick.model.pojo.repository.RepositoryImpl
-import ram.khab.pogodnick.model.repository.LocalDataSource
-import ram.khab.pogodnick.model.repository.LocalDataSourceImpl
-import ram.khab.pogodnick.model.repository.RemoteDataSource
-import ram.khab.pogodnick.model.repository.Repository
+import ram.khab.pogodnick.model.repository.*
 import ram.khab.pogodnick.model.room.AppDatabase
 import ram.khab.pogodnick.ui.main.MainViewModel
 import retrofit2.Retrofit
@@ -41,7 +37,7 @@ val repositoryModule = module {
             remoteDataSource = get()
         )
     }
-    single<RemoteDataSource> {
+    single<WeatherApi> {
         val interceptor = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
@@ -51,6 +47,11 @@ val repositoryModule = module {
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
-            .create(RemoteDataSource::class.java)
+            .create(WeatherApi::class.java)
+    }
+    factory<RemoteDataSource> {
+        RemoteDataSourceImpl(
+            weatherApi = get()
+        )
     }
 }

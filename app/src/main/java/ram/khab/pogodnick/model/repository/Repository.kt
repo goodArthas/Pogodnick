@@ -6,5 +6,5 @@ interface Repository {
     suspend fun getWeatherByCityName(cityName: String): CardWeather
     suspend fun getAllWeather(): List<CardWeather>
     suspend fun deleteWeather(city: CardWeather)
-    suspend fun saveWeather(cityName: CardWeather)
+    suspend fun saveCity(cardWeather: CardWeather)
 }

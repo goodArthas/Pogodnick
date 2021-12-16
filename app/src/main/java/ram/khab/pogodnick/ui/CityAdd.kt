@@ -36,7 +36,7 @@ object CityAdd {
                     Column(Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Bottom) {
                         Row(verticalAlignment = Alignment.Bottom) {
                             AddButton() {
-                                mainViewModel.addCity(text)
+                                mainViewModel.saveCity(text)
                                 navController.popBackStack()
                             }
                         }

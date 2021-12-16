@@ -11,8 +11,8 @@ class LocalDataSourceImpl(
 
     override suspend fun getAllWeather(): List<CardWeather> = dao.getAll()
 
-    override suspend fun deleteWeatherByCityName(cityName: String) = dao.delete(cityName)
+    override suspend fun deleteWeather(cardWeather: CardWeather) = dao.delete(cardWeather)
 
-    override suspend fun saveWeather(cardWeather: CardWeather) = dao.saveWeather(cardWeather)
+    override suspend fun saveCity(cardWeather: CardWeather) = dao.save(cardWeather)
 
 }

@@ -5,7 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class CardWeather(
-    @PrimaryKey var uid: Int = 0,
+    @PrimaryKey(autoGenerate = true)
+    var uid: Int = 0,
     val cityName: String,
     val howDegrease: String,
     val favorite: Boolean
