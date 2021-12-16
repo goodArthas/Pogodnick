@@ -22,7 +22,7 @@ class MainViewModel(
     }
 
     private suspend fun fetchData() {
-        _weatherCardsData.postValue(repository.getAllWeather().toList())
+        _weatherCardsData.postValue(repository.getAllWeather())
     }
 
     fun deleteWeatherCard(city: CardWeather) {
