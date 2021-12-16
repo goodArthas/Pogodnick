@@ -1,20 +1,18 @@
 package ram.khab.pogodnick.model.room
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 import ram.khab.pogodnick.model.pojo.CardWeather
 
 @Dao
 interface WeatherCardDao {
     @Query("SELECT * FROM cardweather")
-    suspend fun getAll(): List<CardWeather>
+    fun getAll(): Flow<List<CardWeather>>
 
-    @Delete()
-    suspend fun delete(cityCardWeather: CardWeather)
+    @Delete
+    suspend fun delete(cityCardWeather: CardWeather): Int
 
-    @Insert
-    suspend fun save(cityCardWeather: CardWeather)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun save(cityCardWeather: CardWeather): Long
 
 }

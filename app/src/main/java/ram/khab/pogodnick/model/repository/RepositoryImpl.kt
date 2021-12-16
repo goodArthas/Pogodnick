@@ -1,5 +1,6 @@
 package ram.khab.pogodnick.model.repository
 
+import kotlinx.coroutines.flow.*
 import ram.khab.pogodnick.model.mapToCard
 import ram.khab.pogodnick.model.pojo.CardWeather
 import ram.khab.pogodnick.model.repository.local.LocalDataSource
@@ -10,14 +11,20 @@ class RepositoryImpl(
     private val remoteDataSource: RemoteDataSource
 ) : Repository {
 
-    override suspend fun getWeatherByCityName(cityName: String): CardWeather =
-        remoteDataSource.getWeatherByCityName(cityName).mapToCard()
+    override fun getWeatherByCityName(cityName: String): Flow<CardWeather> {
+        return remoteDataSource
+            .getWeatherByCityName(cityName)
+            .map { weather ->
+                return@map weather.mapToCard()
+            }
+    }
 
 
-    override suspend fun getAllWeather(): List<CardWeather> = localRepo.getAllWeather()
+    override fun getAllWeather(): Flow<List<CardWeather>> = localRepo.getAllWeather()
 
-    override suspend fun deleteWeather(city: CardWeather) = localRepo.deleteWeather(city)
+    override fun deleteWeather(city: CardWeather): Flow<Int> = localRepo.deleteWeather(city)
 
-    override suspend fun saveCity(cardWeather: CardWeather) = localRepo.saveCity(cardWeather)
+    override fun saveCity(cardWeather: CardWeather): Flow<Long> =
+        localRepo.saveCity(cardWeather)
 
 }

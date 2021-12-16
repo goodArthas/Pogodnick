@@ -1,5 +1,6 @@
 package ram.khab.pogodnick.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -12,6 +13,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -33,6 +35,20 @@ import ram.khab.pogodnick.ui.theme.White
 object WeatherInCities {
     @Composable
     fun WeatherInTheCities(navController: NavController, mainVm: MainViewModel) {
+        val state = mainVm.stateLiveData.observeAsState()
+
+        state.value?.let {
+            when (it) {
+                is MainViewModel.State.Error -> {
+                    Toast.makeText(
+                        LocalContext.current,
+                        stringResource(id = it.errorRes),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+
         PogodnickTheme {
             Scaffold(
                 floatingActionButton = {
@@ -134,13 +150,13 @@ object WeatherInCities {
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     fun CitiesList(mainVm: MainViewModel) {
-        val listCard: List<CardWeather> by mainVm.weatherCardsData.observeAsState(listOf())
+        val uiState = mainVm.dataListToUi
         val padding = dimensionResource(id = R.dimen.padding_standart)
         LazyColumn(
             contentPadding = PaddingValues(horizontal = padding, vertical = padding),
             verticalArrangement = Arrangement.spacedBy(padding)
         ) {
-            items(listCard) { card ->
+            items(uiState) { card ->
                 CityItem(weather = card, mainVm)
             }
         }

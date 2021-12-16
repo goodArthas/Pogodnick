@@ -1,9 +1,10 @@
 package ram.khab.pogodnick.model.repository.remote
 
+import kotlinx.coroutines.flow.Flow
 import ram.khab.pogodnick.model.pojo.weather_from_web.Weather
 
 interface RemoteDataSource {
 
-    suspend fun getWeatherByCityName(cityName: String): Weather
+    fun getWeatherByCityName(cityName: String): Flow<Weather>
 
 }
