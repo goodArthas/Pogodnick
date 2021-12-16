@@ -6,9 +6,15 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import ram.khab.pogodnick.model.repository.*
+import ram.khab.pogodnick.model.repository.Repository
+import ram.khab.pogodnick.model.repository.RepositoryImpl
+import ram.khab.pogodnick.model.repository.api.WeatherApi
+import ram.khab.pogodnick.model.repository.local.LocalDataSource
+import ram.khab.pogodnick.model.repository.local.LocalDataSourceImpl
+import ram.khab.pogodnick.model.repository.remote.RemoteDataSource
+import ram.khab.pogodnick.model.repository.remote.RemoteDataSourceImpl
 import ram.khab.pogodnick.model.room.AppDatabase
-import ram.khab.pogodnick.ui.main.MainViewModel
+import ram.khab.pogodnick.screens.main.MainViewModel
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

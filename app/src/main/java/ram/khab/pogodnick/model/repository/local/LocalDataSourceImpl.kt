@@ -1,4 +1,4 @@
-package ram.khab.pogodnick.model.repository
+package ram.khab.pogodnick.model.repository.local
 
 import ram.khab.pogodnick.model.pojo.CardWeather
 import ram.khab.pogodnick.model.room.AppDatabase

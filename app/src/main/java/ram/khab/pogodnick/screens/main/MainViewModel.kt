@@ -1,4 +1,4 @@
-package ram.khab.pogodnick.ui.main
+package ram.khab.pogodnick.screens.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

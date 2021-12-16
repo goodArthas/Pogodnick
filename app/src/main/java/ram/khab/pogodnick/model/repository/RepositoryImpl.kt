@@ -2,6 +2,8 @@ package ram.khab.pogodnick.model.repository
 
 import ram.khab.pogodnick.model.mapToCard
 import ram.khab.pogodnick.model.pojo.CardWeather
+import ram.khab.pogodnick.model.repository.local.LocalDataSource
+import ram.khab.pogodnick.model.repository.remote.RemoteDataSource
 
 class RepositoryImpl(
     private val localRepo: LocalDataSource,

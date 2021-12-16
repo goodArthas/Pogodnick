@@ -1,4 +1,4 @@
-package ram.khab.pogodnick.model.repository
+package ram.khab.pogodnick.model.repository.api
 
 import ram.khab.pogodnick.BuildConfig
 import ram.khab.pogodnick.model.pojo.weather_from_web.Weather
