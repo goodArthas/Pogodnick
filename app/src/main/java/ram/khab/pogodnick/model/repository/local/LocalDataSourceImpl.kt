@@ -21,4 +21,8 @@ class LocalDataSourceImpl(
     override fun saveCity(cardWeather: CardWeather): Flow<Long> =
         flow { emit(dao.save(cardWeather)) }
 
+    override fun updateWeather(cityCardWeatherList: List<CardWeather>): Flow<Int> =
+        flow { emit(dao.update(cityCardWeatherList)) }
+
+
 }

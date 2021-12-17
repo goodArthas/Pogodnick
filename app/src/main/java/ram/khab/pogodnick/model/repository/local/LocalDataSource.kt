@@ -7,4 +7,5 @@ interface LocalDataSource {
    fun getAllWeather(): Flow<List<CardWeather>>
    fun deleteWeather(cardWeather: CardWeather): Flow<Int>
    fun saveCity(cardWeather: CardWeather): Flow<Long>
+   fun updateWeather(cityCardWeatherList: List<CardWeather>): Flow<Int>
 }

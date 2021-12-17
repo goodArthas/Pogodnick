@@ -7,9 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ram.khab.pogodnick.R
 import ram.khab.pogodnick.model.pojo.CardWeather
@@ -27,21 +25,43 @@ class MainViewModel(
 
     init {
         viewModelScope.launch {
-            fetchData()
+            updateWeather()
         }
     }
 
-    private suspend fun fetchData() {
+    private suspend fun fetchDataFromDb() {
         repository.getAllWeather()
             .collect {
                 dataListToUi = it
             }
     }
 
+    private suspend fun updateWeather() {
+        repository
+            .getAllWeather()
+            .onStart {
+                _stateLiveData.postValue(State.Loading)
+            }
+            .map {
+                return@map it.asFlow()
+                    .flatMapMerge {
+                        repository.getWeatherByCityName(it.cityName, it.uid)
+                    }
+                    .toList()
+            }
+            .catch { exception ->
+                _stateLiveData.postValue(State.Error(R.string.error_update))
+                fetchDataFromDb()
+            }.collect {
+                repository.updateWeather(it).collect()
+                fetchDataFromDb()
+            }
+    }
+
     fun deleteWeatherCard(city: CardWeather) {
         viewModelScope.launch {
             repository.deleteWeather(city).collect()
-            fetchData()
+            fetchDataFromDb()
         }
     }
 

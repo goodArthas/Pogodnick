@@ -15,4 +15,7 @@ interface WeatherCardDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun save(cityCardWeather: CardWeather): Long
 
+    @Update
+    suspend fun update(cityCardWeatherList: List<CardWeather>): Int
+
 }

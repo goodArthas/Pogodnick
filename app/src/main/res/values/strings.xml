@@ -20,4 +20,5 @@
     <string name="like_city">Добавить город в избранное</string>
     <string name="delete_city">Удалить город из приложения</string>
     <string name="error_something_wrong">Что то пошло не так…</string>
+    <string name="error_update">При обновление данных произошла ошибка</string>
 </resources>
