@@ -53,7 +53,7 @@ object CityAdd {
                                 .fillMaxWidth()
                                 .padding(start = padding, end = padding, bottom = mediumPadding)
                                 .height(buttonHeightSize),
-                            enabled = text.length > 3
+                            enabled = text.length > 2
                         )
                         {
                             Text(
