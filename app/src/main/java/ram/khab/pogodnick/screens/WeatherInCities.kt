@@ -91,9 +91,14 @@ object WeatherInCities {
         val iconSize = dimensionResource(R.dimen.icon_size_small)
         val fontSize = fontDimensionResource(R.dimen.text_size)
         val padding = dimensionResource(R.dimen.padding_standart)
+
         var thumbIconLiked by remember {
             mutableStateOf(weather.favorite)
         }
+        var openDialog by remember {
+            mutableStateOf(false)
+        }
+
         val iconHeart = if (thumbIconLiked) R.drawable.press_heart else R.drawable.heart
 
         Card(
@@ -139,13 +144,35 @@ object WeatherInCities {
                             .height(iconSize)
                             .width(iconSize)
                             .clickable {
-                                mainVm.deleteWeatherCard(weather)
+                                openDialog = true
                             },
                         painter = painterResource(id = R.drawable.trash_can),
                         contentDescription = stringResource(id = R.string.delete_city),
                     )
                 }
             }
+        }
+        if (openDialog) {
+            AlertDialog(onDismissRequest = { /*TODO*/ },
+                text = { Text(text = stringResource(id = R.string.delete_city)) },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            mainVm.deleteWeatherCard(weather)
+                            openDialog = false
+                        }) {
+                        Text(stringResource(id = R.string.yes))
+                    }
+                },
+                dismissButton = {
+                    Button(
+                        onClick = {
+                            openDialog = false
+                        }) {
+                        Text(stringResource(id = R.string.no))
+                    }
+                }
+            )
         }
     }
 
