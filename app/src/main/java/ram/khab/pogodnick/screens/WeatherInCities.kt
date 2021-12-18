@@ -19,6 +19,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import ram.khab.pogodnick.R
 import ram.khab.pogodnick.model.Screens
 import ram.khab.pogodnick.model.pojo.CardWeather
@@ -152,12 +154,17 @@ object WeatherInCities {
     fun CitiesList(mainVm: MainViewModel) {
         val uiState = mainVm.dataListToUi
         val padding = dimensionResource(id = R.dimen.padding_standart)
-        LazyColumn(
-            contentPadding = PaddingValues(horizontal = padding, vertical = padding),
-            verticalArrangement = Arrangement.spacedBy(padding)
-        ) {
-            items(uiState) { card ->
-                CityItem(weather = card, mainVm)
+        val isRefreshing by mainVm.isRefreshing.collectAsState()
+        SwipeRefresh(
+            state = rememberSwipeRefreshState(isRefreshing),
+            onRefresh = { mainVm.updateWeather() }) {
+            LazyColumn(
+                contentPadding = PaddingValues(horizontal = padding, vertical = padding),
+                verticalArrangement = Arrangement.spacedBy(padding)
+            ) {
+                items(uiState) { card ->
+                    CityItem(weather = card, mainVm)
+                }
             }
         }
     }

@@ -23,10 +23,14 @@ class MainViewModel(
     var dataListToUi by mutableStateOf(listOf<CardWeather>())
         private set
 
+    private val _isRefreshing = MutableStateFlow(false)
+
+    val isRefreshing: StateFlow<Boolean>
+        get() = _isRefreshing.asStateFlow()
+
+
     init {
-        viewModelScope.launch {
-            updateWeather()
-        }
+        updateWeather()
     }
 
     private suspend fun fetchDataFromDb() {
@@ -36,26 +40,31 @@ class MainViewModel(
             }
     }
 
-    private suspend fun updateWeather() {
-        repository
-            .getAllWeather()
-            .onStart {
-                _stateLiveData.postValue(State.Loading)
-            }
-            .map {
-                return@map it.asFlow()
-                    .flatMapMerge {
-                        repository.getWeatherByCityName(it.cityName, it.uid)
-                    }
-                    .toList()
-            }
-            .catch { exception ->
-                _stateLiveData.postValue(State.Error(R.string.error_update))
-                fetchDataFromDb()
-            }.collect {
-                repository.updateWeather(it).collect()
-                fetchDataFromDb()
-            }
+    fun updateWeather() {
+        viewModelScope.launch {
+            repository
+                .getAllWeather()
+                .onStart {
+                    _stateLiveData.postValue(State.Loading)
+                    _isRefreshing.emit(true)
+                }
+                .map {
+                    return@map it.asFlow()
+                        .flatMapMerge {
+                            repository.getWeatherByCityName(it.cityName, it.uid)
+                        }
+                        .toList()
+                }
+                .catch { exception ->
+                    _isRefreshing.emit(false)
+                    _stateLiveData.postValue(State.Error(R.string.error_update))
+                    fetchDataFromDb()
+                }.collect {
+                    _isRefreshing.emit(false)
+                    repository.updateWeather(it).collect()
+                    fetchDataFromDb()
+                }
+        }
     }
 
     fun deleteWeatherCard(city: CardWeather) {
