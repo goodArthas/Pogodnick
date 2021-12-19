@@ -11,14 +11,13 @@ class RepositoryImpl(
     private val remoteDataSource: RemoteDataSource
 ) : Repository {
 
-    override fun getWeatherByCityName(cityName: String, foreignKey: Int): Flow<CardWeather> {
+    override fun getWeather(cardWeather: CardWeather): Flow<CardWeather> {
         return remoteDataSource
-            .getWeatherByCityName(cityName)
+            .getWeatherByCityName(cardWeather.cityName)
             .map { weather ->
-                return@map weather.mapToCard(foreignKey)
+                return@map weather.mapToCard(cardWeather.uid, cardWeather.favorite)
             }
     }
-
 
     override fun getAllWeather(): Flow<List<CardWeather>> = localRepo.getAllWeather()
 

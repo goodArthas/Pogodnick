@@ -17,6 +17,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import ram.khab.pogodnick.R
+import ram.khab.pogodnick.model.pojo.CardWeather
 import ram.khab.pogodnick.screens.CityAdd.InputText
 import ram.khab.pogodnick.screens.CityAdd.MyAppBar
 import ram.khab.pogodnick.screens.main.MainViewModel
@@ -46,7 +47,13 @@ object CityAdd {
                     Row(verticalAlignment = Alignment.Bottom) {
                         Button(
                             onClick = {
-                                mainViewModel.saveCity(text)
+                                mainViewModel.saveCity(
+                                    CardWeather(
+                                        cityName = text,
+                                        favorite = false,
+                                        howDegrease = ""
+                                    )
+                                )
                                 navController.popBackStack()
                             },
                             modifier = Modifier

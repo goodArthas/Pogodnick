@@ -20,7 +20,7 @@ class MainViewModel(
     private val _stateLiveData: MutableLiveData<State> = MutableLiveData()
     val stateLiveData: LiveData<State> = _stateLiveData
 
-    var dataListToUi by mutableStateOf(listOf<CardWeather>())
+    var dataListToUi by mutableStateOf(mapOf<Boolean, List<CardWeather>>())
         private set
 
     private val _isRefreshing = MutableStateFlow(false)
@@ -36,7 +36,8 @@ class MainViewModel(
     private suspend fun fetchDataFromDb() {
         repository.getAllWeather()
             .collect { listCardWeather ->
-                dataListToUi = listCardWeather
+                dataListToUi =
+                    listCardWeather.groupBy { it.favorite }.toSortedMap(compareBy { !it })
             }
     }
 
@@ -51,7 +52,7 @@ class MainViewModel(
                 .map {
                     return@map it.asFlow()
                         .flatMapMerge { cardWeather ->
-                            repository.getWeatherByCityName(cardWeather.cityName, cardWeather.uid)
+                            repository.getWeather(cardWeather)
                         }
                         .toList()
                 }
@@ -67,6 +68,12 @@ class MainViewModel(
         }
     }
 
+    fun updateFavoriteWeather(cardWeather: CardWeather) {
+        viewModelScope.launch {
+            repository.updateWeather(listOf(cardWeather)).collect()
+        }
+    }
+
     fun deleteWeatherCard(city: CardWeather) {
         viewModelScope.launch {
             repository.deleteWeather(city).collect()
@@ -74,9 +81,9 @@ class MainViewModel(
         }
     }
 
-    fun saveCity(cityName: String) {
+    fun saveCity(cardWeather: CardWeather) {
         viewModelScope.launch {
-            repository.getWeatherByCityName(cityName)
+            repository.getWeather(cardWeather)
                 .onStart {
                     _stateLiveData.postValue(State.Loading)
                 }
@@ -88,7 +95,8 @@ class MainViewModel(
                     repository.saveCity(cardWeather).collect()
                 }
             repository.getAllWeather().collect { listCardWeather ->
-                dataListToUi = listCardWeather
+                dataListToUi =
+                    listCardWeather.groupBy { it.favorite }.toSortedMap(compareBy { !it })
             }
         }
     }
