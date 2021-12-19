@@ -35,8 +35,8 @@ class MainViewModel(
 
     private suspend fun fetchDataFromDb() {
         repository.getAllWeather()
-            .collect {
-                dataListToUi = it
+            .collect { listCardWeather ->
+                dataListToUi = listCardWeather
             }
     }
 
@@ -50,18 +50,18 @@ class MainViewModel(
                 }
                 .map {
                     return@map it.asFlow()
-                        .flatMapMerge {
-                            repository.getWeatherByCityName(it.cityName, it.uid)
+                        .flatMapMerge { cardWeather ->
+                            repository.getWeatherByCityName(cardWeather.cityName, cardWeather.uid)
                         }
                         .toList()
                 }
-                .catch { exception ->
+                .catch {
                     _isRefreshing.emit(false)
                     _stateLiveData.postValue(State.Error(R.string.error_update))
                     fetchDataFromDb()
-                }.collect {
+                }.collect { listCardWeather ->
                     _isRefreshing.emit(false)
-                    repository.updateWeather(it).collect()
+                    repository.updateWeather(listCardWeather).collect()
                     fetchDataFromDb()
                 }
         }
@@ -83,12 +83,12 @@ class MainViewModel(
                 .catch { exception ->
                     _stateLiveData.postValue(State.Error(R.string.error_something_wrong))
                 }
-                .collect {
+                .collect { cardWeather ->
                     _stateLiveData.postValue(State.Success)
-                    repository.saveCity(it).collect()
+                    repository.saveCity(cardWeather).collect()
                 }
-            repository.getAllWeather().collect {
-                dataListToUi = it
+            repository.getAllWeather().collect { listCardWeather ->
+                dataListToUi = listCardWeather
             }
         }
     }
