@@ -14,11 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import ram.khab.pogodnick.R
 import ram.khab.pogodnick.model.pojo.CardWeather
-import ram.khab.pogodnick.screens.CityAdd.InputText
 import ram.khab.pogodnick.screens.main.MainViewModel
 import ram.khab.pogodnick.ui.fontDimensionResource
 import ram.khab.pogodnick.ui.theme.BlackText
@@ -26,13 +24,15 @@ import ram.khab.pogodnick.ui.theme.MyAppBar
 import ram.khab.pogodnick.ui.theme.PogodnickTheme
 import ram.khab.pogodnick.ui.theme.Shapes
 
-object CityAdd {
+const val CITY_ADD_SCREEN_NAME = "cityAddScreen"
+
+class CityAddScreen {
     @Composable
-    fun CityAddScreen(
+    fun Screen(
         navController: NavController,
         mainViewModel: MainViewModel
     ) {
-        val padding = dimensionResource(id = R.dimen.padding_standart)
+        val padding = dimensionResource(id = R.dimen.padding_standard)
         val mediumPadding = dimensionResource(id = R.dimen.padding_large)
         val buttonTextSize = fontDimensionResource(id = R.dimen.button_text_size)
         val buttonHeightSize = dimensionResource(id = R.dimen.button_height_size)
@@ -40,8 +40,8 @@ object CityAdd {
 
         PogodnickTheme {
             Column {
-                MyAppBar(R.string.add_city)
-                InputText() {
+                MyAppBar(stringResource(id = R.string.add_city))
+                InputText {
                     text = it
                 }
                 Column(Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Bottom) {
@@ -76,11 +76,9 @@ object CityAdd {
     }
 
 
-
-
     @Composable
-    fun InputText(changeTest: (String) -> Unit) {
-        val padding = dimensionResource(id = R.dimen.padding_standart)
+    private fun InputText(changeTest: (String) -> Unit) {
+        val padding = dimensionResource(id = R.dimen.padding_standard)
         val mediumPadding = dimensionResource(id = R.dimen.padding_medium)
         var text by rememberSaveable { mutableStateOf("") }
 
@@ -103,45 +101,4 @@ object CityAdd {
 
 }
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-private fun CityAddScreenPreview() {
-    PogodnickTheme {
-        Column {
-            MyAppBar(R.string.add_city)
-            InputText() {
-
-            }
-            Column(Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Bottom) {
-                Row(verticalAlignment = Alignment.Bottom) {
-                    val padding = dimensionResource(id = R.dimen.padding_standart)
-                    val mediumPadding = dimensionResource(id = R.dimen.padding_large)
-                    val buttonTextSize =
-                        fontDimensionResource(id = R.dimen.button_text_size)
-                    val buttonHeightSize =
-                        dimensionResource(id = R.dimen.button_height_size)
-
-                    Button(
-                        onClick = {
-
-                        },
-
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = padding, end = padding, bottom = mediumPadding)
-                            .height(buttonHeightSize),
-                        enabled = true
-
-                    )
-                    {
-                        Text(
-                            text = stringResource(id = R.string.add),
-                            fontSize = buttonTextSize
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
 

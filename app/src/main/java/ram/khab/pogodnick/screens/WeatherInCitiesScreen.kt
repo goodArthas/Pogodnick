@@ -20,25 +20,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import ram.khab.pogodnick.R
-import ram.khab.pogodnick.model.Screens
 import ram.khab.pogodnick.model.pojo.CardWeather
-import ram.khab.pogodnick.screens.WeatherInCities.CityItem
-import ram.khab.pogodnick.screens.WeatherInCities.TopBar
 import ram.khab.pogodnick.screens.main.MainViewModel
 import ram.khab.pogodnick.ui.fontDimensionResource
 import ram.khab.pogodnick.ui.theme.*
 
-object WeatherInCities {
-    @Composable
-    fun WeatherInTheCities(navController: NavController, mainVm: MainViewModel) {
-        val state = mainVm.stateLiveData.observeAsState()
+const val WEATHER_IN_CITY_SCREEN_NAME = "weatherInCitiesScreen"
 
-        state.value?.let {
+class WeatherInCitiesScreen {
+
+    @Composable
+    fun Screen(
+        navController: NavController,
+        mainVm: MainViewModel
+    ) {
+        val state = mainVm.stateLiveData.observeAsState()
+        state.value.let {
             when (it) {
                 is MainViewModel.State.Error -> {
                     Toast.makeText(
@@ -54,7 +55,7 @@ object WeatherInCities {
             Scaffold(
                 floatingActionButton = {
                     FloatingActionButton(onClick = {
-                        navController.navigate(Screens.CityAddScreen)
+                        navController.navigate(CITY_ADD_SCREEN_NAME)
                     }) {
                         Icon(
                             imageVector = Icons.Filled.Add,
@@ -75,7 +76,7 @@ object WeatherInCities {
     }
 
     @Composable
-    fun TopBar() {
+    private fun TopBar() {
         TopAppBar(
             title = {
                 Text(text = stringResource(id = R.string.weather_in_cities))
@@ -86,10 +87,10 @@ object WeatherInCities {
     }
 
     @Composable
-    fun CityItem(weather: CardWeather, mainVm: MainViewModel) {
+    private fun CityItem(weather: CardWeather, mainVm: MainViewModel) {
         val iconSize = dimensionResource(R.dimen.icon_size_small)
         val fontSize = fontDimensionResource(R.dimen.text_size)
-        val padding = dimensionResource(R.dimen.padding_standart)
+        val padding = dimensionResource(R.dimen.padding_standard)
 
 
         var openDialog by remember {
@@ -178,9 +179,9 @@ object WeatherInCities {
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
-    fun CitiesList(mainVm: MainViewModel) {
+    private fun CitiesList(mainVm: MainViewModel) {
         val uiState = mainVm.dataListToUi
-        val padding = dimensionResource(id = R.dimen.padding_standart)
+        val padding = dimensionResource(id = R.dimen.padding_standard)
         val headerTextSize = fontDimensionResource(id = R.dimen.text_small_size)
         val isRefreshing by mainVm.isRefreshing.collectAsState()
         SwipeRefresh(
@@ -216,45 +217,3 @@ object WeatherInCities {
     }
 }
 
-@Composable
-@Preview
-private fun Header() {
-
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    val mainVm: MainViewModel? = null
-    PogodnickTheme {
-        Scaffold(
-            floatingActionButton = {
-                FloatingActionButton(onClick = {
-
-                }) {
-                    Icon(
-                        imageVector = Icons.Filled.Add,
-                        contentDescription = stringResource(id = R.string.add_city)
-                    )
-                }
-            }
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-            ) {
-                TopBar()
-                val listCard: List<CardWeather> = listOf()
-                val padding = dimensionResource(id = R.dimen.padding_standart)
-                LazyColumn(
-                    contentPadding = PaddingValues(horizontal = padding, vertical = padding),
-                    verticalArrangement = Arrangement.spacedBy(padding)
-                ) {
-                    items(listCard) { card ->
-                        CityItem(weather = card, mainVm!!)
-                    }
-                }
-            }
-        }
-    }
-}

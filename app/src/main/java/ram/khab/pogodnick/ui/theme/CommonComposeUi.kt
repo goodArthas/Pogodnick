@@ -13,11 +13,11 @@ import androidx.compose.ui.res.stringResource
 import ram.khab.pogodnick.R
 
 @Composable
-fun MyAppBar(topAppBarTextTes: Int) {
-    val padding = dimensionResource(id = R.dimen.padding_standart)
+fun MyAppBar(topAppBarText: String) {
+    val padding = dimensionResource(id = R.dimen.padding_standard)
     TopAppBar(
         title = {
-            Text(text = stringResource(id = topAppBarTextTes))
+            Text(text = topAppBarText)
         },
         backgroundColor = PurpleBase,
         contentColor = White,
