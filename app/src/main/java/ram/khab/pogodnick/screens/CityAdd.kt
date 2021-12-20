@@ -1,9 +1,9 @@
 package ram.khab.pogodnick.screens
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.Button
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,11 +19,12 @@ import androidx.navigation.NavController
 import ram.khab.pogodnick.R
 import ram.khab.pogodnick.model.pojo.CardWeather
 import ram.khab.pogodnick.screens.CityAdd.InputText
-import ram.khab.pogodnick.screens.CityAdd.MyAppBar
 import ram.khab.pogodnick.screens.main.MainViewModel
 import ram.khab.pogodnick.ui.fontDimensionResource
-
-import ram.khab.pogodnick.ui.theme.*
+import ram.khab.pogodnick.ui.theme.BlackText
+import ram.khab.pogodnick.ui.theme.MyAppBar
+import ram.khab.pogodnick.ui.theme.PogodnickTheme
+import ram.khab.pogodnick.ui.theme.Shapes
 
 object CityAdd {
     @Composable
@@ -39,7 +40,7 @@ object CityAdd {
 
         PogodnickTheme {
             Column {
-                MyAppBar()
+                MyAppBar(R.string.add_city)
                 InputText() {
                     text = it
                 }
@@ -75,24 +76,7 @@ object CityAdd {
     }
 
 
-    @Composable
-    fun MyAppBar() {
-        val padding = dimensionResource(id = R.dimen.padding_standart)
-        TopAppBar(
-            title = {
-                Text(text = stringResource(id = R.string.add_city))
-            },
-            backgroundColor = PurpleBase,
-            contentColor = White,
-            navigationIcon = {
-                Icon(
-                    modifier = Modifier.padding(padding),
-                    imageVector = Icons.Filled.ArrowBack,
-                    contentDescription = stringResource(id = R.string.add_city)
-                )
-            }
-        )
-    }
+
 
     @Composable
     fun InputText(changeTest: (String) -> Unit) {
@@ -124,7 +108,7 @@ object CityAdd {
 private fun CityAddScreenPreview() {
     PogodnickTheme {
         Column {
-            MyAppBar()
+            MyAppBar(R.string.add_city)
             InputText() {
 
             }
