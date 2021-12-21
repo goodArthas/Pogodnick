@@ -2,6 +2,9 @@ package ram.khab.pogodnick.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
@@ -12,7 +15,9 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import ram.khab.pogodnick.R
+import ram.khab.pogodnick.model.pojo.WeatherListByDays
 import ram.khab.pogodnick.ui.fontDimensionResource
 import ram.khab.pogodnick.ui.theme.BlackText
 import ram.khab.pogodnick.ui.theme.MyAppBar
@@ -75,7 +80,80 @@ class WeatherDetail {
                     fontSize = fontDimensionResource(id = R.dimen.text_small_size),
                     textAlign = TextAlign.Center
                 )
+                Row(
+                    modifier = Modifier
+                        .padding(top = dimensionResource(id = R.dimen.padding_small))
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    val icon3daySize = dimensionResource(id = R.dimen.icon_size_medium)
+                    val list = listOf(
+                        WeatherListByDays("30.10", "", "+1  C"),
+                        WeatherListByDays("30.10", "", "+1  C"),
+                        WeatherListByDays("30.10", "", "+1  C")
+                    )
+                    LazyRow(horizontalArrangement = Arrangement.spacedBy(paddingStandard)) {
+                        itemsIndexed(list) { _, item ->
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(text = item.dateText)
+                                Image(
+                                    imageVector = Icons.Default.Settings,
+                                    contentDescription = null,
+                                    Modifier.size(icon3daySize)
+                                )
+                                Text(text = item.temperatureText)
+                            }
+
+                        }
+                    }
+                }
+
+                DividerHorizontal()
             }
+        }
+    }
+
+    @Composable
+    private fun DividerHorizontal() {
+        Spacer(modifier = Modifier.height(16.dp))
+        Divider(
+            Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp)
+        )
+        Spacer(
+            modifier = Modifier
+                .height(16.dp)
+                .fillMaxWidth()
+        )
+    }
+
+    @Composable
+    private fun Column3Day(
+        dateText: String,
+        iconUrlText: String,
+        temperatureText: String,
+        isStartPadding: Boolean,
+        isEndPadding: Boolean
+    ) {
+        val paddingStandard = dimensionResource(id = R.dimen.padding_standard)
+        val icon3daySize = dimensionResource(id = R.dimen.icon_size_medium)
+        Column(
+            modifier = Modifier.padding(
+                start = if (isStartPadding) paddingStandard else 0.dp,
+                end = if (isEndPadding) paddingStandard else 0.dp
+            ),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = "30.11")
+            Image(
+                imageVector = Icons.Default.Settings,
+                contentDescription = null,
+                Modifier.size(icon3daySize)
+            )
+            Text(text = "+1 °C")
         }
     }
 
