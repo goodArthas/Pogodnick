@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import ram.khab.pogodnick.R
 import ram.khab.pogodnick.model.pojo.WeatherListByDays
 import ram.khab.pogodnick.ui.fontDimensionResource
+import ram.khab.pogodnick.ui.theme.Black
 import ram.khab.pogodnick.ui.theme.BlackText
 import ram.khab.pogodnick.ui.theme.MyAppBar
 import ram.khab.pogodnick.ui.theme.PogodnickTheme
@@ -109,10 +110,36 @@ class WeatherDetail {
                         }
                     }
                 }
-
                 DividerHorizontal()
+                WeatherLine(headerText = "Видимость", bodyText = "10 Км")
+                DividerHorizontal()
+                WeatherLine(headerText = "Давление", bodyText = "1008 кПа")
+                DividerHorizontal()
+                WeatherLine(headerText = "Влажность", bodyText = "90%")
+                DividerHorizontal()
+                WeatherLine(headerText = "Ветер", bodyText = "2.83 м/с (ЮЮЗ)")
+
             }
         }
+    }
+
+    @Composable
+    private fun WeatherLine(headerText: String, bodyText: String) {
+        val paddingStandard = dimensionResource(id = R.dimen.padding_standard)
+        val textHeadSize = fontDimensionResource(id = R.dimen.text_smaller_size)
+        val textBodySize = fontDimensionResource(id = R.dimen.text_small_size)
+        Text(
+            fontSize = textHeadSize,
+            color = BlackText,
+            text = headerText,
+            modifier = Modifier.padding(start = paddingStandard)
+        )
+        Text(
+            fontSize = textBodySize,
+            color = Black,
+            text = bodyText,
+            modifier = Modifier.padding(start = paddingStandard)
+        )
     }
 
     @Composable
