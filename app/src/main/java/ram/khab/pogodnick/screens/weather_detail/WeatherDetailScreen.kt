@@ -14,9 +14,9 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
+import org.koin.androidx.compose.getViewModel
 import ram.khab.pogodnick.R
 import ram.khab.pogodnick.ui.fontDimensionResource
 import ram.khab.pogodnick.ui.theme.Black
@@ -30,9 +30,9 @@ class WeatherDetailScreen {
 
     @Composable
     fun Screen(
-        navController: NavController,
-        mainViewModel: WeatherDetailViewModel = viewModel()
+        navController: NavController
     ) {
+        val mainViewModel = getViewModel<WeatherDetailViewModel>()
         val weatherDetail = mainViewModel.dataToUi
         PogodnickTheme {
             Column {

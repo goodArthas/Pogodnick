@@ -27,6 +27,7 @@ import ram.khab.pogodnick.R
 import ram.khab.pogodnick.model.State
 import ram.khab.pogodnick.model.pojo.CardWeather
 import ram.khab.pogodnick.screens.main.MainViewModel
+import ram.khab.pogodnick.screens.weather_detail.WEATHER_DETAIL_SCREEN_NAME
 import ram.khab.pogodnick.ui.fontDimensionResource
 import ram.khab.pogodnick.ui.theme.*
 
@@ -70,7 +71,7 @@ class WeatherInCitiesScreen {
                         .fillMaxHeight()
                 ) {
                     TopBar()
-                    CitiesList(mainVm)
+                    CitiesList(mainVm, navController)
                 }
             }
         }
@@ -88,11 +89,14 @@ class WeatherInCitiesScreen {
     }
 
     @Composable
-    private fun CityItem(weather: CardWeather, mainVm: MainViewModel) {
+    private fun CityItem(
+        weather: CardWeather,
+        mainVm: MainViewModel,
+        navController: NavController
+    ) {
         val iconSize = dimensionResource(R.dimen.icon_size_small)
         val fontSize = fontDimensionResource(R.dimen.text_size)
         val padding = dimensionResource(R.dimen.padding_standard)
-
 
         var openDialog by remember {
             mutableStateOf(false)
@@ -104,7 +108,11 @@ class WeatherInCitiesScreen {
         Card(
             shape = Shapes.large,
             backgroundColor = White,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    navController.navigate(WEATHER_DETAIL_SCREEN_NAME)
+                }
         ) {
             Column {
                 Row(
@@ -180,7 +188,7 @@ class WeatherInCitiesScreen {
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
-    private fun CitiesList(mainVm: MainViewModel) {
+    private fun CitiesList(mainVm: MainViewModel, navController: NavController) {
         val uiState = mainVm.dataListToUi
         val padding = dimensionResource(id = R.dimen.padding_standard)
         val headerTextSize = fontDimensionResource(id = R.dimen.text_small_size)
@@ -210,7 +218,7 @@ class WeatherInCitiesScreen {
                         }
                     }
                     items(contactsForInitial) { card ->
-                        CityItem(weather = card, mainVm)
+                        CityItem(weather = card, mainVm, navController)
                     }
                 }
             }
