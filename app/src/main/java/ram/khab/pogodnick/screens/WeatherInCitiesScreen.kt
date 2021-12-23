@@ -24,6 +24,7 @@ import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import ram.khab.pogodnick.R
+import ram.khab.pogodnick.model.State
 import ram.khab.pogodnick.model.pojo.CardWeather
 import ram.khab.pogodnick.screens.main.MainViewModel
 import ram.khab.pogodnick.ui.fontDimensionResource
@@ -41,7 +42,7 @@ class WeatherInCitiesScreen {
         val state = mainVm.stateLiveData.observeAsState()
         state.value.let {
             when (it) {
-                is MainViewModel.State.Error -> {
+                is State.Error -> {
                     Toast.makeText(
                         LocalContext.current,
                         stringResource(id = it.errorRes),

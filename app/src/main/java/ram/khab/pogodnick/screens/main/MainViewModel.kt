@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ram.khab.pogodnick.R
+import ram.khab.pogodnick.model.State
 import ram.khab.pogodnick.model.pojo.CardWeather
 import ram.khab.pogodnick.model.repository.Repository
 
@@ -101,9 +102,4 @@ class MainViewModel(
         }
     }
 
-    sealed class State {
-        object Loading : State()
-        object Success : State()
-        data class Error(val errorRes: Int) : State()
-    }
 }

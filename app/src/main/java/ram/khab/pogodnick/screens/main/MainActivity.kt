@@ -11,6 +11,8 @@ import ram.khab.pogodnick.screens.CITY_ADD_SCREEN_NAME
 import ram.khab.pogodnick.screens.CityAddScreen
 import ram.khab.pogodnick.screens.WEATHER_IN_CITY_SCREEN_NAME
 import ram.khab.pogodnick.screens.WeatherInCitiesScreen
+import ram.khab.pogodnick.screens.weather_detail.WEATHER_DETAIL_SCREEN_NAME
+import ram.khab.pogodnick.screens.weather_detail.WeatherDetailScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -30,6 +32,11 @@ class MainActivity : ComponentActivity() {
                     CityAddScreen().Screen(
                         navController,
                         mainVm
+                    )
+                }
+                composable(WEATHER_DETAIL_SCREEN_NAME) {
+                    WeatherDetailScreen().Screen(
+                        navController
                     )
                 }
             }

@@ -15,11 +15,13 @@ import ram.khab.pogodnick.model.repository.remote.RemoteDataSource
 import ram.khab.pogodnick.model.repository.remote.RemoteDataSourceImpl
 import ram.khab.pogodnick.model.room.AppDatabase
 import ram.khab.pogodnick.screens.main.MainViewModel
+import ram.khab.pogodnick.screens.weather_detail.WeatherDetailViewModel
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 val mainModule = module {
     viewModel { MainViewModel(get()) }
+    viewModel { WeatherDetailViewModel(get()) }
 }
 
 val repositoryModule = module {

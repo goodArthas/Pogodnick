@@ -1,7 +1,8 @@
 package ram.khab.pogodnick.model.pojo
 
-data class WeatherListByDays(
+data class WeatherByDays(
     val dateText: String,
     val iconUrlText: String,
+    val iconUrlDescription: String,
     val temperatureText: String,
 )

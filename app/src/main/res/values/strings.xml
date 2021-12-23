@@ -9,13 +9,13 @@
     <string name="enter_city_name">Введите название города</string>
     <string name="add">Добавить</string>
     <string name="temperature">Температура</string>
-    <string name="feel_like">Ощущается как</string>
+    <string name="feels_like">Ощущается как</string>
     <string name="forecast_on_3_days">Прогноз на 3 дня</string>
     <string name="visibility">Видимость</string>
     <string name="pressure">Давление</string>
     <string name="humidity">Влажность</string>
     <string name="wind">Ветер</string>
-    <string name="km">км</string>
+    <string name="metre">м</string>
     <string name="kPa">кПа</string>
     <string name="like_city">Добавить город в избранное</string>
     <string name="delete_city">Удалить город из приложения?</string>
@@ -24,4 +24,6 @@
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="celsius">°C</string>
+    <string name="percent">%</string>
+    <string name="metreInSec">%</string>
 </resources>

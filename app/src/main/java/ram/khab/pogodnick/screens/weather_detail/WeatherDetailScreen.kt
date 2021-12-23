@@ -1,4 +1,5 @@
-package ram.khab.pogodnick.screens
+package ram.khab.pogodnick.screens.weather_detail
+
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -6,18 +7,17 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
 import ram.khab.pogodnick.R
-import ram.khab.pogodnick.model.pojo.WeatherListByDays
 import ram.khab.pogodnick.ui.fontDimensionResource
 import ram.khab.pogodnick.ui.theme.Black
 import ram.khab.pogodnick.ui.theme.BlackText
@@ -26,14 +26,21 @@ import ram.khab.pogodnick.ui.theme.PogodnickTheme
 
 const val WEATHER_DETAIL_SCREEN_NAME = "weatherDetailScreen"
 
-class WeatherDetail {
+class WeatherDetailScreen {
 
     @Composable
-    fun Screen(cityName: String) {
+    fun Screen(
+        navController: NavController,
+        mainViewModel: WeatherDetailViewModel = viewModel()
+    ) {
+        val weatherDetail = mainViewModel.dataToUi
         PogodnickTheme {
             Column {
-                MyAppBar(cityName)
+                MyAppBar(weatherDetail.cityName) {
+                    navController.popBackStack()
+                }
                 val paddingStandard = dimensionResource(id = R.dimen.padding_standard)
+                val paddingSmall = dimensionResource(id = R.dimen.padding_small)
                 Text(
                     text = stringResource(id = R.string.temperature),
                     color = BlackText,
@@ -48,34 +55,34 @@ class WeatherDetail {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
-                        imageVector = Icons.Default.Settings,
-                        contentDescription = null,
+                        painter = rememberImagePainter(weatherDetail.weatherHeaderIconUrl),
+                        contentDescription = weatherDetail.weatherHeaderIconDescription,
                         Modifier.size(
                             dimensionResource(id = R.dimen.icon_size_large)
                         )
                     )
                     Text(
-                        text = " +2 °C ",
-                        fontSize = fontDimensionResource(
-                            id = R.dimen.text_medium_size
-                        )
+                        text = weatherDetail.temperatureHeader,
+                        fontSize = fontDimensionResource(id = R.dimen.text_medium_size)
                     )
 
                 }
+                val feelsLike = "${stringResource(id = R.string.feels_like)} " +
+                        "${weatherDetail.feelsLikeTemperature} " +
+                        "${stringResource(id = R.string.celsius)} " +
+                        weatherDetail.weather
                 Text(
-                    text = "Ощущается как 0 °C. Пасмурно",
+                    text = feelsLike,
                     modifier = Modifier.padding(
-                        start = paddingStandard, top = dimensionResource(
-                            id = R.dimen.padding_small
-                        )
+                        start = paddingStandard, top = paddingSmall
                     ),
                     color = BlackText,
                     fontSize = fontDimensionResource(id = R.dimen.text_small_size)
                 )
                 Text(
-                    text = "Прогноз на 3 дня",
+                    text = stringResource(id = R.string.forecast_on_3_days),
                     modifier = Modifier
-                        .padding(top = dimensionResource(id = R.dimen.padding_small))
+                        .padding(top = paddingSmall)
                         .fillMaxWidth(),
                     color = BlackText,
                     fontSize = fontDimensionResource(id = R.dimen.text_small_size),
@@ -83,43 +90,51 @@ class WeatherDetail {
                 )
                 Row(
                     modifier = Modifier
-                        .padding(top = dimensionResource(id = R.dimen.padding_small))
+                        .padding(top = paddingSmall)
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    val icon3daySize = dimensionResource(id = R.dimen.icon_size_medium)
-                    val list = listOf(
-                        WeatherListByDays("30.10", "", "+1  C"),
-                        WeatherListByDays("30.10", "", "+1  C"),
-                        WeatherListByDays("30.10", "", "+1  C")
-                    )
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(paddingStandard)) {
-                        itemsIndexed(list) { _, item ->
-                            Column(
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Text(text = item.dateText)
-                                Image(
-                                    imageVector = Icons.Default.Settings,
-                                    contentDescription = null,
-                                    Modifier.size(icon3daySize)
-                                )
-                                Text(text = item.temperatureText)
-                            }
-
+                        itemsIndexed(weatherDetail.weathersList) { count, item ->
+                            ColumnDay(
+                                dateText = item.dateText,
+                                iconUrlText = item.iconUrlText,
+                                iconUrlDescription = item.iconUrlDescription,
+                                temperatureText = item.iconUrlText,
+                                isStartPadding = count != 0,
+                                isEndPadding = count != weatherDetail.weathersList.size - 1
+                            )
                         }
+
                     }
                 }
-                DividerHorizontal()
-                WeatherLine(headerText = "Видимость", bodyText = "10 Км")
-                DividerHorizontal()
-                WeatherLine(headerText = "Давление", bodyText = "1008 кПа")
-                DividerHorizontal()
-                WeatherLine(headerText = "Влажность", bodyText = "90%")
-                DividerHorizontal()
-                WeatherLine(headerText = "Ветер", bodyText = "2.83 м/с (ЮЮЗ)")
-
             }
+            DividerHorizontal()
+            val visibilityRange =
+                "${weatherDetail.visibilityRange} ${stringResource(id = R.string.metre)}"
+            WeatherLine(
+                headerText = stringResource(id = R.string.visibility),
+                bodyText = visibilityRange
+            )
+            DividerHorizontal()
+            val pressure = "${weatherDetail.pressure} ${stringResource(id = R.string.kPa)}"
+            WeatherLine(
+                headerText = stringResource(id = R.string.pressure),
+                bodyText = pressure
+            )
+            DividerHorizontal()
+            val humidity = "${weatherDetail.humidity} ${stringResource(id = R.string.percent)}"
+            WeatherLine(
+                headerText = stringResource(id = R.string.humidity),
+                bodyText = humidity
+            )
+            DividerHorizontal()
+            val windText =
+                "${weatherDetail.windSpeed} ${stringResource(id = R.string.metreInSec)} (${weatherDetail.windDirection})"
+            WeatherLine(
+                headerText = stringResource(id = R.string.wind),
+                bodyText = windText
+            )
         }
     }
 
@@ -158,9 +173,10 @@ class WeatherDetail {
     }
 
     @Composable
-    private fun Column3Day(
+    private fun ColumnDay(
         dateText: String,
         iconUrlText: String,
+        iconUrlDescription: String,
         temperatureText: String,
         isStartPadding: Boolean,
         isEndPadding: Boolean
@@ -174,21 +190,15 @@ class WeatherDetail {
             ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "30.11")
+            Text(text = dateText)
             Image(
-                imageVector = Icons.Default.Settings,
-                contentDescription = null,
+                painter = rememberImagePainter(iconUrlText),
+                contentDescription = iconUrlDescription,
                 Modifier.size(icon3daySize)
             )
-            Text(text = "+1 °C")
         }
-    }
-
-    @Preview(showSystemUi = true, showBackground = true)
-    @Composable
-    fun ScreenPre(
-    ) {
-        Screen(cityName = "Москва")
+        val temperature = "${temperatureText} ${stringResource(id = R.string.celsius)}"
+        Text(text = temperature)
     }
 
 }

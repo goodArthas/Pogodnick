@@ -40,7 +40,9 @@ class CityAddScreen {
 
         PogodnickTheme {
             Column {
-                MyAppBar(stringResource(id = R.string.add_city))
+                MyAppBar(stringResource(id = R.string.add_city)) {
+                    navController.popBackStack()
+                }
                 InputText {
                     text = it
                 }
