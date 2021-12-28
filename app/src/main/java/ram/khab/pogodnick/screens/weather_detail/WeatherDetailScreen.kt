@@ -58,9 +58,7 @@ class WeatherDetailScreen {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
-                        painter = rememberImagePainter(
-                            "https://openweathermap.org/img/wn/${weatherDetail.weatherHeaderIconUrl}.png"
-                        ),
+                        painter = rememberImagePainter(getWeatherIconUrl(weatherDetail.weatherHeaderIconUrl)),
                         contentDescription = weatherDetail.weatherHeaderIconDescription,
                         Modifier.size(
                             dimensionResource(id = R.dimen.icon_size_large)
@@ -198,7 +196,7 @@ class WeatherDetailScreen {
         ) {
             Text(text = dateText)
             Image(
-                painter = rememberImagePainter("https://openweathermap.org/img/wn/${iconUrlText}.png"),
+                painter = rememberImagePainter(getWeatherIconUrl(iconUrlText)),
                 contentDescription = iconUrlDescription,
                 Modifier.size(icon3daySize)
             )
@@ -206,6 +204,9 @@ class WeatherDetailScreen {
             Text(text = temperature)
         }
     }
+
+    private fun getWeatherIconUrl(iconId: String) =
+        "https://openweathermap.org/img/wn/${iconId}.png"
 
     @Preview(showSystemUi = true, showBackground = true)
     @Composable
