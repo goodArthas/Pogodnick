@@ -41,8 +41,40 @@ class WeatherInCitiesScreen {
 
     @Preview()
     @Composable
-    fun PreViewScreen() {
+    fun PreViewCard() {
         CityItem(weather = CardWeather(0, "Moscow", "-23", false), MainViewModel(object :
+            Repository {
+            override fun getWeather(cardWeather: CardWeather): Flow<CardWeather> {
+                TODO("Not yet implemented")
+            }
+
+            override fun getWeatherDetails(cityName: String): Flow<WeatherDetails> {
+                TODO("Not yet implemented")
+            }
+
+            override fun getAllWeather(): Flow<List<CardWeather>> {
+                TODO("Not yet implemented")
+            }
+
+            override fun deleteWeather(city: CardWeather): Flow<Int> {
+                TODO("Not yet implemented")
+            }
+
+            override fun saveCity(cardWeather: CardWeather): Flow<Long> {
+                TODO("Not yet implemented")
+            }
+
+            override fun updateWeather(cityCardWeatherList: List<CardWeather>): Flow<Int> {
+                TODO("Not yet implemented")
+            }
+        })) { path ->
+        }
+    }
+
+    @Preview()
+    @Composable
+    fun PreViewScreen() {
+        Screen(MainViewModel(object :
             Repository {
             override fun getWeather(cardWeather: CardWeather): Flow<CardWeather> {
                 TODO("Not yet implemented")
@@ -89,27 +121,31 @@ class WeatherInCitiesScreen {
                 }
             }
         }
-
         PogodnickTheme {
-            Scaffold(
-                floatingActionButton = {
-                    FloatingActionButton(onClick = {
-                        navigate(CITY_ADD_SCREEN_NAME)
-                    }) {
-                        Icon(
-                            imageVector = Icons.Filled.Add,
-                            contentDescription = stringResource(id = R.string.add_city)
-                        )
-                    }
-                }, backgroundColor = MaterialTheme.colors.background
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxHeight()
+            val isRefreshing by mainVm.isRefreshing.collectAsState()
+            SwipeRefresh(
+                state = rememberSwipeRefreshState(isRefreshing),
+                onRefresh = { mainVm.updateWeather() }) {
+                Scaffold(
+                    floatingActionButton = {
+                        FloatingActionButton(onClick = {
+                            navigate(CITY_ADD_SCREEN_NAME)
+                        }) {
+                            Icon(
+                                imageVector = Icons.Filled.Add,
+                                contentDescription = stringResource(id = R.string.add_city)
+                            )
+                        }
+                    }, backgroundColor = MaterialTheme.colors.background
                 ) {
-                    TopBar()
-                    CitiesList(mainVm) { path ->
-                        navigate(path)
+                    Column(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                    ) {
+                        TopBar()
+                        CitiesList(mainVm) { path ->
+                            navigate(path)
+                        }
                     }
                 }
             }
@@ -231,35 +267,30 @@ class WeatherInCitiesScreen {
         val uiState = mainVm.dataListToUi
         val padding = dimensionResource(id = R.dimen.padding_standard)
         val headerTextSize = fontDimensionResource(id = R.dimen.text_small_size)
-        val isRefreshing by mainVm.isRefreshing.collectAsState()
-        SwipeRefresh(
-            state = rememberSwipeRefreshState(isRefreshing),
-            onRefresh = { mainVm.updateWeather() }) {
-            LazyColumn(
-                contentPadding = PaddingValues(horizontal = padding, vertical = padding),
-                verticalArrangement = Arrangement.spacedBy(padding)
-            ) {
-                uiState.forEach { (initial, contactsForInitial) ->
-                    val header = if (initial) R.string.favorites else R.string.other_cities
-                    if (uiState.keys.first()) {
-                        stickyHeader {
-                            Row(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .background(color = PurpleLight)
-                            ) {
-                                Text(
-                                    text = stringResource(header),
-                                    Modifier.padding(start = dimensionResource(id = R.dimen.padding_small)),
-                                    fontSize = headerTextSize
-                                )
-                            }
+        LazyColumn(
+            contentPadding = PaddingValues(horizontal = padding, vertical = padding),
+            verticalArrangement = Arrangement.spacedBy(padding)
+        ) {
+            uiState.forEach { (initial, contactsForInitial) ->
+                val header = if (initial) R.string.favorites else R.string.other_cities
+                if (uiState.keys.first()) {
+                    stickyHeader {
+                        Row(
+                            Modifier
+                                .fillMaxWidth()
+                                .background(color = PurpleLight)
+                        ) {
+                            Text(
+                                text = stringResource(header),
+                                Modifier.padding(start = dimensionResource(id = R.dimen.padding_small)),
+                                fontSize = headerTextSize
+                            )
                         }
                     }
-                    items(contactsForInitial) { card ->
-                        CityItem(weather = card, mainVm) { path ->
-                            navigate(path)
-                        }
+                }
+                items(contactsForInitial) { card ->
+                    CityItem(weather = card, mainVm) { path ->
+                        navigate(path)
                     }
                 }
             }
