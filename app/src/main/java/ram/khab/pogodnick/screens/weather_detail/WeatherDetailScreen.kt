@@ -73,7 +73,6 @@ class WeatherDetailScreen {
         viewModel: WeatherDetailViewModel = getViewModel(),
         backArrowClick: () -> Unit
     ) {
-        //val mainViewModel = getViewModel<WeatherDetailViewModel>()
         val weatherDetail = viewModel.dataToUi
         viewModel.getDetailWeather(cityName ?: "Москва")
         PogodnickTheme {

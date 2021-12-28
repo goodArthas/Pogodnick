@@ -101,7 +101,7 @@ class WeatherInCitiesScreen {
                             contentDescription = stringResource(id = R.string.add_city)
                         )
                     }
-                }
+                }, backgroundColor = MaterialTheme.colors.background
             ) {
                 Column(
                     modifier = Modifier

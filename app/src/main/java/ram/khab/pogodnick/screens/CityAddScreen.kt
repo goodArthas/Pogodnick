@@ -1,7 +1,9 @@
 package ram.khab.pogodnick.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -78,7 +80,7 @@ class CityAddScreen {
         var text by rememberSaveable { mutableStateOf("") }
 
         PogodnickTheme {
-            Column {
+            Column(Modifier.background(MaterialTheme.colors.background)) {
                 MyAppBar(stringResource(id = R.string.add_city)) {
                     navigationBack()
                 }
