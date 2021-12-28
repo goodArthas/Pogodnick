@@ -20,11 +20,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import kotlinx.coroutines.flow.Flow
 import ram.khab.pogodnick.R
 import ram.khab.pogodnick.model.State
 import ram.khab.pogodnick.model.pojo.CardWeather
+import ram.khab.pogodnick.model.pojo.WeatherDetails
+import ram.khab.pogodnick.model.repository.Repository
 import ram.khab.pogodnick.screens.main.MainViewModel
 import ram.khab.pogodnick.screens.weather_detail.WEATHER_DETAIL_SCREEN_NAME
 import ram.khab.pogodnick.ui.fontDimensionResource
@@ -33,6 +37,40 @@ import ram.khab.pogodnick.ui.theme.*
 const val WEATHER_IN_CITY_SCREEN_NAME = "weatherInCitiesScreen"
 
 class WeatherInCitiesScreen {
+
+
+    @Preview()
+    @Composable
+    fun PreViewScreen() {
+        CityItem(weather = CardWeather(0, "Moscow", "-23", false), MainViewModel(object :
+            Repository {
+            override fun getWeather(cardWeather: CardWeather): Flow<CardWeather> {
+                TODO("Not yet implemented")
+            }
+
+            override fun getWeatherDetails(cityName: String): Flow<WeatherDetails> {
+                TODO("Not yet implemented")
+            }
+
+            override fun getAllWeather(): Flow<List<CardWeather>> {
+                TODO("Not yet implemented")
+            }
+
+            override fun deleteWeather(city: CardWeather): Flow<Int> {
+                TODO("Not yet implemented")
+            }
+
+            override fun saveCity(cardWeather: CardWeather): Flow<Long> {
+                TODO("Not yet implemented")
+            }
+
+            override fun updateWeather(cityCardWeatherList: List<CardWeather>): Flow<Int> {
+                TODO("Not yet implemented")
+            }
+        })) { path ->
+        }
+    }
+
 
     @Composable
     fun Screen(

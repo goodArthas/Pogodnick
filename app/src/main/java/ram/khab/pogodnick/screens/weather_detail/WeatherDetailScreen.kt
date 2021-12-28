@@ -16,9 +16,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
+import kotlinx.coroutines.flow.Flow
 import org.koin.androidx.compose.getViewModel
 import ram.khab.pogodnick.R
-
+import ram.khab.pogodnick.model.pojo.CardWeather
+import ram.khab.pogodnick.model.pojo.WeatherDetails
+import ram.khab.pogodnick.model.repository.Repository
 import ram.khab.pogodnick.ui.fontDimensionResource
 import ram.khab.pogodnick.ui.theme.Black
 import ram.khab.pogodnick.ui.theme.BlackText
@@ -29,14 +32,50 @@ const val WEATHER_DETAIL_SCREEN_NAME = "weatherDetailScreen"
 
 class WeatherDetailScreen {
 
+    @Preview(showSystemUi = true, showBackground = true)
+    @Composable
+    fun PreviewScreen() {
+        Screen(
+            "Mockva", WeatherDetailViewModel(object : Repository {
+                override fun getWeather(cardWeather: CardWeather): Flow<CardWeather> {
+                    TODO("Not yet implemented")
+                }
+
+                override fun getWeatherDetails(cityName: String): Flow<WeatherDetails> {
+                    TODO("Not yet implemented")
+                }
+
+                override fun getAllWeather(): Flow<List<CardWeather>> {
+                    TODO("Not yet implemented")
+                }
+
+                override fun deleteWeather(city: CardWeather): Flow<Int> {
+                    TODO("Not yet implemented")
+                }
+
+                override fun saveCity(cardWeather: CardWeather): Flow<Long> {
+                    TODO("Not yet implemented")
+                }
+
+                override fun updateWeather(cityCardWeatherList: List<CardWeather>): Flow<Int> {
+                    TODO("Not yet implemented")
+                }
+
+            })
+        ) {
+
+        }
+    }
+
     @Composable
     fun Screen(
         cityName: String?,
+        viewModel: WeatherDetailViewModel = getViewModel(),
         backArrowClick: () -> Unit
     ) {
-        val mainViewModel = getViewModel<WeatherDetailViewModel>()
-        val weatherDetail = mainViewModel.dataToUi
-        mainViewModel.getDetailWeather(cityName ?: "Москва")
+        //val mainViewModel = getViewModel<WeatherDetailViewModel>()
+        val weatherDetail = viewModel.dataToUi
+        viewModel.getDetailWeather(cityName ?: "Москва")
         PogodnickTheme {
             Column {
                 MyAppBar(cityName ?: "Москва") {
@@ -207,12 +246,4 @@ class WeatherDetailScreen {
 
     private fun getWeatherIconUrl(iconId: String) =
         "https://openweathermap.org/img/wn/${iconId}.png"
-
-    @Preview(showSystemUi = true, showBackground = true)
-    @Composable
-    fun Prew() {
-        Screen(cityName = "") {
-
-        }
-    }
 }
