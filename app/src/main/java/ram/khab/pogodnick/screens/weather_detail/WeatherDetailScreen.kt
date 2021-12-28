@@ -13,11 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import org.koin.androidx.compose.getViewModel
 import ram.khab.pogodnick.R
+
 import ram.khab.pogodnick.ui.fontDimensionResource
 import ram.khab.pogodnick.ui.theme.Black
 import ram.khab.pogodnick.ui.theme.BlackText
@@ -30,14 +31,16 @@ class WeatherDetailScreen {
 
     @Composable
     fun Screen(
-        navController: NavController
+        cityName: String?,
+        backArrowClick: () -> Unit
     ) {
         val mainViewModel = getViewModel<WeatherDetailViewModel>()
         val weatherDetail = mainViewModel.dataToUi
+        mainViewModel.getDetailWeather(cityName ?: "Москва")
         PogodnickTheme {
             Column {
-                MyAppBar(weatherDetail.cityName) {
-                    navController.popBackStack()
+                MyAppBar(cityName ?: "Москва") {
+                    backArrowClick()
                 }
                 val paddingStandard = dimensionResource(id = R.dimen.padding_standard)
                 val paddingSmall = dimensionResource(id = R.dimen.padding_small)
@@ -55,7 +58,9 @@ class WeatherDetailScreen {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
-                        painter = rememberImagePainter(weatherDetail.weatherHeaderIconUrl),
+                        painter = rememberImagePainter(
+                            "https://openweathermap.org/img/wn/${weatherDetail.weatherHeaderIconUrl}.png"
+                        ),
                         contentDescription = weatherDetail.weatherHeaderIconDescription,
                         Modifier.size(
                             dimensionResource(id = R.dimen.icon_size_large)
@@ -100,7 +105,7 @@ class WeatherDetailScreen {
                                 dateText = item.dateText,
                                 iconUrlText = item.iconUrlText,
                                 iconUrlDescription = item.iconUrlDescription,
-                                temperatureText = item.iconUrlText,
+                                temperatureText = item.temperatureText,
                                 isStartPadding = count != 0,
                                 isEndPadding = count != weatherDetail.weathersList.size - 1
                             )
@@ -108,33 +113,34 @@ class WeatherDetailScreen {
 
                     }
                 }
+
+                DividerHorizontal()
+                val visibilityRange =
+                    "${weatherDetail.visibilityRange} ${stringResource(id = R.string.metre)}"
+                WeatherLine(
+                    headerText = stringResource(id = R.string.visibility),
+                    bodyText = visibilityRange
+                )
+                DividerHorizontal()
+                val pressure = "${weatherDetail.pressure} ${stringResource(id = R.string.kPa)}"
+                WeatherLine(
+                    headerText = stringResource(id = R.string.pressure),
+                    bodyText = pressure
+                )
+                DividerHorizontal()
+                val humidity = "${weatherDetail.humidity} ${stringResource(id = R.string.percent)}"
+                WeatherLine(
+                    headerText = stringResource(id = R.string.humidity),
+                    bodyText = humidity
+                )
+                DividerHorizontal()
+                val windText =
+                    "${weatherDetail.windSpeed} ${stringResource(id = R.string.metreInSec)} (${weatherDetail.windDirection})"
+                WeatherLine(
+                    headerText = stringResource(id = R.string.wind),
+                    bodyText = windText
+                )
             }
-            DividerHorizontal()
-            val visibilityRange =
-                "${weatherDetail.visibilityRange} ${stringResource(id = R.string.metre)}"
-            WeatherLine(
-                headerText = stringResource(id = R.string.visibility),
-                bodyText = visibilityRange
-            )
-            DividerHorizontal()
-            val pressure = "${weatherDetail.pressure} ${stringResource(id = R.string.kPa)}"
-            WeatherLine(
-                headerText = stringResource(id = R.string.pressure),
-                bodyText = pressure
-            )
-            DividerHorizontal()
-            val humidity = "${weatherDetail.humidity} ${stringResource(id = R.string.percent)}"
-            WeatherLine(
-                headerText = stringResource(id = R.string.humidity),
-                bodyText = humidity
-            )
-            DividerHorizontal()
-            val windText =
-                "${weatherDetail.windSpeed} ${stringResource(id = R.string.metreInSec)} (${weatherDetail.windDirection})"
-            WeatherLine(
-                headerText = stringResource(id = R.string.wind),
-                bodyText = windText
-            )
         }
     }
 
@@ -192,13 +198,20 @@ class WeatherDetailScreen {
         ) {
             Text(text = dateText)
             Image(
-                painter = rememberImagePainter(iconUrlText),
+                painter = rememberImagePainter("https://openweathermap.org/img/wn/${iconUrlText}.png"),
                 contentDescription = iconUrlDescription,
                 Modifier.size(icon3daySize)
             )
+            val temperature = "${temperatureText} ${stringResource(id = R.string.celsius)}"
+            Text(text = temperature)
         }
-        val temperature = "${temperatureText} ${stringResource(id = R.string.celsius)}"
-        Text(text = temperature)
     }
 
+    @Preview(showSystemUi = true, showBackground = true)
+    @Composable
+    fun Prew() {
+        Screen(cityName = "") {
+
+        }
+    }
 }

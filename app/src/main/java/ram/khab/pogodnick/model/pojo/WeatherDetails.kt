@@ -1,7 +1,6 @@
 package ram.khab.pogodnick.model.pojo
 
 data class WeatherDetails(
-    val cityName: String = "",
     val temperatureHeader: String = "",
     val weatherHeaderIconUrl: String = "",
     val weatherHeaderIconDescription: String = "",

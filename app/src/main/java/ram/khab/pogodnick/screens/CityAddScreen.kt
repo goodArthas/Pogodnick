@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.navigation.NavController
 import ram.khab.pogodnick.R
 import ram.khab.pogodnick.model.pojo.CardWeather
 import ram.khab.pogodnick.screens.main.MainViewModel
@@ -29,8 +28,8 @@ const val CITY_ADD_SCREEN_NAME = "cityAddScreen"
 class CityAddScreen {
     @Composable
     fun Screen(
-        navController: NavController,
-        mainViewModel: MainViewModel
+        mainViewModel: MainViewModel,
+        navigationBack: () -> Unit
     ) {
         val padding = dimensionResource(id = R.dimen.padding_standard)
         val mediumPadding = dimensionResource(id = R.dimen.padding_large)
@@ -41,7 +40,7 @@ class CityAddScreen {
         PogodnickTheme {
             Column {
                 MyAppBar(stringResource(id = R.string.add_city)) {
-                    navController.popBackStack()
+                    navigationBack()
                 }
                 InputText {
                     text = it
@@ -57,7 +56,7 @@ class CityAddScreen {
                                         howDegrease = ""
                                     )
                                 )
-                                navController.popBackStack()
+                                navigationBack()
                             },
                             modifier = Modifier
                                 .fillMaxWidth()

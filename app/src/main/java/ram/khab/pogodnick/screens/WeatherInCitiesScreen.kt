@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import ram.khab.pogodnick.R
@@ -37,8 +36,8 @@ class WeatherInCitiesScreen {
 
     @Composable
     fun Screen(
-        navController: NavController,
-        mainVm: MainViewModel
+        mainVm: MainViewModel,
+        navigate: (navigateTo: String) -> Unit
     ) {
         val state = mainVm.stateLiveData.observeAsState()
         state.value.let {
@@ -57,7 +56,7 @@ class WeatherInCitiesScreen {
             Scaffold(
                 floatingActionButton = {
                     FloatingActionButton(onClick = {
-                        navController.navigate(CITY_ADD_SCREEN_NAME)
+                        navigate(CITY_ADD_SCREEN_NAME)
                     }) {
                         Icon(
                             imageVector = Icons.Filled.Add,
@@ -71,7 +70,9 @@ class WeatherInCitiesScreen {
                         .fillMaxHeight()
                 ) {
                     TopBar()
-                    CitiesList(mainVm, navController)
+                    CitiesList(mainVm) { path ->
+                        navigate(path)
+                    }
                 }
             }
         }
@@ -92,7 +93,7 @@ class WeatherInCitiesScreen {
     private fun CityItem(
         weather: CardWeather,
         mainVm: MainViewModel,
-        navController: NavController
+        navigate: (navigateTo: String) -> Unit
     ) {
         val iconSize = dimensionResource(R.dimen.icon_size_small)
         val fontSize = fontDimensionResource(R.dimen.text_size)
@@ -111,7 +112,7 @@ class WeatherInCitiesScreen {
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    navController.navigate(WEATHER_DETAIL_SCREEN_NAME)
+                    navigate("$WEATHER_DETAIL_SCREEN_NAME/${weather.cityName}")
                 }
         ) {
             Column {
@@ -188,7 +189,7 @@ class WeatherInCitiesScreen {
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
-    private fun CitiesList(mainVm: MainViewModel, navController: NavController) {
+    private fun CitiesList(mainVm: MainViewModel, navigate: (navigateTo: String) -> Unit) {
         val uiState = mainVm.dataListToUi
         val padding = dimensionResource(id = R.dimen.padding_standard)
         val headerTextSize = fontDimensionResource(id = R.dimen.text_small_size)
@@ -218,7 +219,9 @@ class WeatherInCitiesScreen {
                         }
                     }
                     items(contactsForInitial) { card ->
-                        CityItem(weather = card, mainVm, navController)
+                        CityItem(weather = card, mainVm) { path ->
+                            navigate(path)
+                        }
                     }
                 }
             }

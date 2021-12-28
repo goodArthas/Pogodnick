@@ -25,5 +25,5 @@
     <string name="no">Нет</string>
     <string name="celsius">°C</string>
     <string name="percent">%</string>
-    <string name="metreInSec">%</string>
+    <string name="metreInSec">м/с</string>
 </resources>

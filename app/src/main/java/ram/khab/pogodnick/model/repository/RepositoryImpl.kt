@@ -3,6 +3,7 @@ package ram.khab.pogodnick.model.repository
 import kotlinx.coroutines.flow.*
 import ram.khab.pogodnick.model.mapToCard
 import ram.khab.pogodnick.model.pojo.CardWeather
+import ram.khab.pogodnick.model.pojo.WeatherDetails
 import ram.khab.pogodnick.model.repository.local.LocalDataSource
 import ram.khab.pogodnick.model.repository.remote.RemoteDataSource
 
@@ -18,6 +19,9 @@ class RepositoryImpl(
                 return@map weather.mapToCard(cardWeather.uid, cardWeather.favorite)
             }
     }
+
+    override fun getWeatherDetails(cityName: String): Flow<WeatherDetails> =
+        remoteDataSource.getWeatherDetailsByCityName(cityName)
 
     override fun getAllWeather(): Flow<List<CardWeather>> = localRepo.getAllWeather()
 

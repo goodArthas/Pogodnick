@@ -3,9 +3,11 @@ package ram.khab.pogodnick.screens.main
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import org.koin.androidx.compose.getViewModel
 import ram.khab.pogodnick.screens.CITY_ADD_SCREEN_NAME
 import ram.khab.pogodnick.screens.CityAddScreen
@@ -24,20 +26,27 @@ class MainActivity : ComponentActivity() {
             NavHost(navController = navController, startDestination = WEATHER_IN_CITY_SCREEN_NAME) {
                 composable(WEATHER_IN_CITY_SCREEN_NAME) {
                     WeatherInCitiesScreen().Screen(
-                        navController,
                         mainVm
-                    )
+                    ) { path ->
+                        navController.navigate(path)
+                    }
                 }
                 composable(CITY_ADD_SCREEN_NAME) {
                     CityAddScreen().Screen(
-                        navController,
                         mainVm
-                    )
+                    ) {
+                        navController.popBackStack()
+                    }
                 }
-                composable(WEATHER_DETAIL_SCREEN_NAME) {
+                composable(
+                    "$WEATHER_DETAIL_SCREEN_NAME/{cityName}",
+                    arguments = listOf(navArgument("cityName") { type = NavType.StringType })
+                ) { backStackEntry ->
                     WeatherDetailScreen().Screen(
-                        navController
-                    )
+                        backStackEntry.arguments?.getString("cityName")
+                    ) {
+                        navController.popBackStack()
+                    }
                 }
             }
         }
