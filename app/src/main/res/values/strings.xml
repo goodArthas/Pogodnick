@@ -26,4 +26,5 @@
     <string name="celsius">°C</string>
     <string name="percent">%</string>
     <string name="metreInSec">м/с</string>
+    <string name="error_city_alraedt_exist">Такой город уже добавлен</string>
 </resources>

@@ -13,6 +13,7 @@ import ram.khab.pogodnick.R
 import ram.khab.pogodnick.model.State
 import ram.khab.pogodnick.model.pojo.CardWeather
 import ram.khab.pogodnick.model.repository.Repository
+import java.util.*
 
 class MainViewModel(
     private val repository: Repository
@@ -84,24 +85,41 @@ class MainViewModel(
 
     fun saveCity(cityName: String) {
         viewModelScope.launch {
-            repository.getWeather(
-                CardWeather(cityName = cityName, favorite = false, howDegrease = "")
-            )
-                .onStart {
-                    _stateLiveData.postValue(State.Loading)
+            checkExistCityInBd(cityName).collect { existCity ->
+                if (!existCity) {
+                    repository.getWeather(
+                        CardWeather(cityName = cityName, favorite = false, howDegrease = "")
+                    )
+                        .onStart {
+                            _stateLiveData.postValue(State.Loading)
+                        }
+                        .catch { exception ->
+                            _stateLiveData.postValue(State.Error(R.string.error_something_wrong))
+                        }
+                        .collect { cardWeather ->
+                            _stateLiveData.postValue(State.Success)
+                            repository.saveCity(cardWeather).collect()
+                        }
+                    repository.getAllWeather().collect { listCardWeather ->
+                        dataListToUi =
+                            listCardWeather.groupBy { it.favorite }.toSortedMap(compareBy { !it })
+                    }
+                } else {
+                    _stateLiveData.postValue(State.Error(R.string.error_city_alraedt_exist))
                 }
-                .catch { exception ->
-                    _stateLiveData.postValue(State.Error(R.string.error_something_wrong))
-                }
-                .collect { cardWeather ->
-                    _stateLiveData.postValue(State.Success)
-                    repository.saveCity(cardWeather).collect()
-                }
-            repository.getAllWeather().collect { listCardWeather ->
-                dataListToUi =
-                    listCardWeather.groupBy { it.favorite }.toSortedMap(compareBy { !it })
             }
         }
+    }
+
+    private fun checkExistCityInBd(cityName: String): Flow<Boolean> = flow {
+        repository
+            .getAllWeather()
+            .collect { listCardWeather ->
+                val card = listCardWeather.filter { cardWeather ->
+                    cardWeather.cityName.lowercase() == cityName.lowercase()
+                }.firstOrNull()
+                if (card != null) emit(true) else emit(false)
+            }
     }
 
 }
