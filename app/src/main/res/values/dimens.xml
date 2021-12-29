@@ -7,12 +7,13 @@
 
     <!--image-->
     <dimen name="icon_size_small">24dp</dimen>
-    <dimen name="icon_size_medium">28dp</dimen>
-    <dimen name="icon_size_large">42dp</dimen>
+    <dimen name="icon_size_medium">36dp</dimen>
+    <dimen name="icon_size_large">48dp</dimen>
 
     <!--text-->
-    <dimen name="text_smaller_size">14sp</dimen>
     <dimen name="text_small_size">16sp</dimen>
+    <dimen name="text_small_medium_size">18sp</dimen>
+    <dimen name="text_normal_size">20sp</dimen>
     <dimen name="text_medium_size">24sp</dimen>
     <dimen name="text_size">32sp</dimen>
 

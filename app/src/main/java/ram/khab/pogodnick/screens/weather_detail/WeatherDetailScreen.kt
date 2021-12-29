@@ -17,10 +17,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.rememberImagePainter
+import kotlinx.coroutines.flow.Flow
 import org.koin.androidx.compose.getViewModel
 import ram.khab.pogodnick.R
+import ram.khab.pogodnick.model.pojo.CardWeather
 import ram.khab.pogodnick.model.pojo.WeatherByDays
 import ram.khab.pogodnick.model.pojo.WeatherDetails
+import ram.khab.pogodnick.model.repository.Repository
 import ram.khab.pogodnick.ui.fontDimensionResource
 import ram.khab.pogodnick.ui.theme.*
 
@@ -28,7 +31,7 @@ const val WEATHER_DETAIL_SCREEN_NAME = "weatherDetailScreen"
 
 class WeatherDetailScreen {
 
-    /*@Preview(showSystemUi = true, showBackground = true)
+    @Preview(showSystemUi = true, showBackground = true)
     @Composable
     fun PreviewScreen() {
         Screen(
@@ -61,7 +64,7 @@ class WeatherDetailScreen {
         ) {
 
         }
-    }*/
+    }
 
     @Preview()
     @Composable
@@ -99,7 +102,7 @@ class WeatherDetailScreen {
                 Text(
                     text = stringResource(id = R.string.temperature),
                     color = BlackText,
-                    fontSize = fontDimensionResource(id = R.dimen.text_smaller_size),
+                    fontSize = fontDimensionResource(id = R.dimen.text_normal_size),
                     modifier = Modifier.padding(
                         start = paddingStandard,
                         top = paddingStandard
@@ -132,7 +135,7 @@ class WeatherDetailScreen {
                         start = paddingStandard, top = paddingSmall
                     ),
                     color = BlackText,
-                    fontSize = fontDimensionResource(id = R.dimen.text_small_size)
+                    fontSize = fontDimensionResource(id = R.dimen.text_normal_size)
                 )
                 Text(
                     text = stringResource(id = R.string.forecast_on_3_days),
@@ -140,7 +143,7 @@ class WeatherDetailScreen {
                         .padding(top = paddingSmall)
                         .fillMaxWidth(),
                     color = BlackText,
-                    fontSize = fontDimensionResource(id = R.dimen.text_small_size),
+                    fontSize = fontDimensionResource(id = R.dimen.text_normal_size),
                     textAlign = TextAlign.Center
                 )
                 Row(
@@ -218,8 +221,8 @@ class WeatherDetailScreen {
     @Composable
     private fun WeatherLine(headerText: String, bodyText: String) {
         val paddingStandard = dimensionResource(id = R.dimen.padding_standard)
-        val textHeadSize = fontDimensionResource(id = R.dimen.text_smaller_size)
-        val textBodySize = fontDimensionResource(id = R.dimen.text_small_size)
+        val textHeadSize = fontDimensionResource(id = R.dimen.text_small_medium_size)
+        val textBodySize = fontDimensionResource(id = R.dimen.text_normal_size)
         Text(
             fontSize = textHeadSize,
             color = BlackText,
@@ -256,18 +259,19 @@ class WeatherDetailScreen {
         iconUrlDescription: String,
         temperatureText: String
     ) {
-        val icon3daySize = dimensionResource(id = R.dimen.icon_size_medium)
+        val icon3daySize = dimensionResource(id = R.dimen.icon_size_large)
+        val textSize = fontDimensionResource(id = R.dimen.text_normal_size)
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = dateText)
+            Text(text = dateText, fontSize = textSize)
             Image(
                 painter = rememberImagePainter(getWeatherIconUrl(iconUrlText)),
                 contentDescription = iconUrlDescription,
                 Modifier.size(icon3daySize)
             )
             val temperature = "${temperatureText} ${stringResource(id = R.string.celsius)}"
-            Text(text = temperature)
+            Text(text = temperature, fontSize = textSize)
         }
     }
 
