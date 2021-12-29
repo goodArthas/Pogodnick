@@ -15,24 +15,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.rememberImagePainter
-import kotlinx.coroutines.flow.Flow
 import org.koin.androidx.compose.getViewModel
 import ram.khab.pogodnick.R
-import ram.khab.pogodnick.model.pojo.CardWeather
+import ram.khab.pogodnick.model.pojo.WeatherByDays
 import ram.khab.pogodnick.model.pojo.WeatherDetails
-import ram.khab.pogodnick.model.repository.Repository
 import ram.khab.pogodnick.ui.fontDimensionResource
-import ram.khab.pogodnick.ui.theme.Black
-import ram.khab.pogodnick.ui.theme.BlackText
-import ram.khab.pogodnick.ui.theme.MyAppBar
-import ram.khab.pogodnick.ui.theme.PogodnickTheme
+import ram.khab.pogodnick.ui.theme.*
 
 const val WEATHER_DETAIL_SCREEN_NAME = "weatherDetailScreen"
 
 class WeatherDetailScreen {
 
-    @Preview(showSystemUi = true, showBackground = true)
+    /*@Preview(showSystemUi = true, showBackground = true)
     @Composable
     fun PreviewScreen() {
         Screen(
@@ -65,6 +61,24 @@ class WeatherDetailScreen {
         ) {
 
         }
+    }*/
+
+    @Preview()
+    @Composable
+    fun PreviewLazyRow() {
+        RowListWeather(
+            weatherDetail = WeatherDetails(
+                weathersList = listOf(
+                    WeatherByDays(
+                        "20.10", "", "", "-10"
+                    ), WeatherByDays(
+                        "21.10", "", "", "-12"
+                    ), WeatherByDays(
+                        "22.10", "", "", "-13"
+                    )
+                )
+            )
+        )
     }
 
     @Composable
@@ -135,21 +149,8 @@ class WeatherDetailScreen {
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    LazyRow(horizontalArrangement = Arrangement.spacedBy(paddingStandard)) {
-                        itemsIndexed(weatherDetail.weathersList) { count, item ->
-                            ColumnDay(
-                                dateText = item.dateText,
-                                iconUrlText = item.iconUrlText,
-                                iconUrlDescription = item.iconUrlDescription,
-                                temperatureText = item.temperatureText,
-                                isStartPadding = count != 0,
-                                isEndPadding = count != weatherDetail.weathersList.size - 1
-                            )
-                        }
-
-                    }
+                    RowListWeather(weatherDetail)
                 }
-
                 DividerHorizontal()
                 val visibilityRange =
                     "${weatherDetail.visibilityRange} ${stringResource(id = R.string.metre)}"
@@ -176,6 +177,40 @@ class WeatherDetailScreen {
                     headerText = stringResource(id = R.string.wind),
                     bodyText = windText
                 )
+            }
+        }
+    }
+
+    @Composable
+    private fun RowListWeather(weatherDetail: WeatherDetails) {
+        LazyRow() {
+            itemsIndexed(weatherDetail.weathersList) { count, item ->
+                ConstraintLayout {
+                    val row = createRef()
+                    Row(modifier = Modifier
+                        .height(IntrinsicSize.Min)
+                        .constrainAs(row) {
+                            top.linkTo(parent.top)
+                        }) {
+                        ColumnDay(
+                            dateText = item.dateText,
+                            iconUrlText = item.iconUrlText,
+                            iconUrlDescription = item.iconUrlDescription,
+                            temperatureText = item.temperatureText
+                        )
+                        if (count < weatherDetail.weathersList.lastIndex)
+                            Spacer(modifier = Modifier.width(8.dp))
+                        if (count < weatherDetail.weathersList.lastIndex) {
+                            Divider(
+                                color = DividerColor,
+                                modifier = Modifier
+                                    .fillMaxHeight()
+                                    .width(1.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                        }
+                    }
+                }
             }
         }
     }
@@ -219,17 +254,10 @@ class WeatherDetailScreen {
         dateText: String,
         iconUrlText: String,
         iconUrlDescription: String,
-        temperatureText: String,
-        isStartPadding: Boolean,
-        isEndPadding: Boolean
+        temperatureText: String
     ) {
-        val paddingStandard = dimensionResource(id = R.dimen.padding_standard)
         val icon3daySize = dimensionResource(id = R.dimen.icon_size_medium)
         Column(
-            modifier = Modifier.padding(
-                start = if (isStartPadding) paddingStandard else 0.dp,
-                end = if (isEndPadding) paddingStandard else 0.dp
-            ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = dateText)
