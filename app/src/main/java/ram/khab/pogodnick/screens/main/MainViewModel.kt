@@ -82,9 +82,11 @@ class MainViewModel(
         }
     }
 
-    fun saveCity(cardWeather: CardWeather) {
+    fun saveCity(cityName: String) {
         viewModelScope.launch {
-            repository.getWeather(cardWeather)
+            repository.getWeather(
+                CardWeather(cityName = cityName, favorite = false, howDegrease = "")
+            )
                 .onStart {
                     _stateLiveData.postValue(State.Loading)
                 }

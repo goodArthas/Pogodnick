@@ -91,13 +91,7 @@ class CityAddScreen {
                     Row(verticalAlignment = Alignment.Bottom) {
                         Button(
                             onClick = {
-                                mainViewModel.saveCity(
-                                    CardWeather(
-                                        cityName = text,
-                                        favorite = false,
-                                        howDegrease = ""
-                                    )
-                                )
+                                mainViewModel.saveCity(text)
                                 navigationBack()
                             },
                             modifier = Modifier
