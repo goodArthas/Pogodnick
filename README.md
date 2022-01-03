@@ -8,10 +8,11 @@ Api используется https://openweathermap.org/api
 удостоверьтесь что на телефоне включена Светлая тема
 
 Список ипользуемых доп. библиотек
--Retrofit
--Koin
--Coil
--Room
--Compose Navigation
--Swiperefresh
--Compose
+
+- Retrofit
+- Koin
+- Coil
+- Room
+- Compose Navigation
+- Swiperefresh
+- Compose
