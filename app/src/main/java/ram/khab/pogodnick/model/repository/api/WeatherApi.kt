@@ -1,7 +1,7 @@
 package ram.khab.pogodnick.model.repository.api
 
 import ram.khab.pogodnick.BuildConfig
-import ram.khab.pogodnick.model.pojo.weather_from_web.Weather
+import ram.khab.pogodnick.model.pojo.weather_from_web.WeatherMain
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -12,5 +12,5 @@ interface WeatherApi {
         @Query("units") units: String = "metric",
         @Query("lang") lang: String = "ru",
         @Query("appid") apikey: String = BuildConfig.API_KEY
-    ): Weather
+    ): WeatherMain
 }

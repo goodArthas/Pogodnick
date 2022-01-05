@@ -6,14 +6,14 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import ram.khab.pogodnick.model.mapToWeatherDetails
 import ram.khab.pogodnick.model.pojo.WeatherDetails
-import ram.khab.pogodnick.model.pojo.weather_from_web.Weather
+import ram.khab.pogodnick.model.pojo.weather_from_web.WeatherMain
 import ram.khab.pogodnick.model.repository.api.WeatherApi
 
 class RemoteDataSourceImpl(
     private val weatherApi: WeatherApi
 ) : RemoteDataSource {
 
-    override fun getWeatherByCityName(cityName: String): Flow<Weather> = flow {
+    override fun getWeatherByCityName(cityName: String): Flow<WeatherMain> = flow {
         emit(weatherApi.requestWeatherByCityName(cityName))
     }.flowOn(Dispatchers.IO)
 
