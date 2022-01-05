@@ -13,7 +13,6 @@ import ram.khab.pogodnick.R
 import ram.khab.pogodnick.model.State
 import ram.khab.pogodnick.model.pojo.CardWeather
 import ram.khab.pogodnick.model.repository.Repository
-import java.util.*
 
 class MainViewModel(
     private val repository: Repository
