@@ -17,13 +17,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.rememberImagePainter
-import kotlinx.coroutines.flow.Flow
 import org.koin.androidx.compose.getViewModel
 import ram.khab.pogodnick.R
-import ram.khab.pogodnick.model.pojo.CardWeather
 import ram.khab.pogodnick.model.pojo.WeatherByDays
 import ram.khab.pogodnick.model.pojo.WeatherDetails
-import ram.khab.pogodnick.model.repository.Repository
 import ram.khab.pogodnick.ui.fontDimensionResource
 import ram.khab.pogodnick.ui.theme.*
 
@@ -31,7 +28,7 @@ const val WEATHER_DETAIL_SCREEN_NAME = "weatherDetailScreen"
 
 class WeatherDetailScreen {
 
-    @Preview(showSystemUi = true, showBackground = true)
+    /*@Preview(showSystemUi = true, showBackground = true)
     @Composable
     fun PreviewScreen() {
         Screen(
@@ -64,7 +61,7 @@ class WeatherDetailScreen {
         ) {
 
         }
-    }
+    }*/
 
     @Preview()
     @Composable

@@ -6,10 +6,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import ram.khab.pogodnick.domain.CitySaverUseCase
-import ram.khab.pogodnick.domain.RemoverCityUseCase
-import ram.khab.pogodnick.domain.UpdaterDataInWeatherCardUseCase
-import ram.khab.pogodnick.domain.WeatherCardLikeChangerUseCase
+import ram.khab.pogodnick.domain.*
 import ram.khab.pogodnick.model.repository.Repository
 import ram.khab.pogodnick.model.repository.RepositoryImpl
 import ram.khab.pogodnick.model.repository.api.WeatherApi
@@ -33,7 +30,12 @@ val mainModule = module {
             updaterWeatherUseCase = get()
         )
     }
-    viewModel { WeatherDetailViewModel(get()) }
+    viewModel {
+        WeatherDetailViewModel(
+            detailWeatherFetcherUseCase = get()
+        )
+    }
+
 }
 
 val repositoryModule = module {
@@ -96,6 +98,11 @@ val useCasesModule = module {
     }
     factory {
         UpdaterDataInWeatherCardUseCase(
+            repository = get()
+        )
+    }
+    factory {
+        DetailWeatherFetcherUseCase(
             repository = get()
         )
     }

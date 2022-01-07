@@ -5,13 +5,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import ram.khab.pogodnick.domain.DetailWeatherFetcherUseCase
 import ram.khab.pogodnick.model.pojo.WeatherDetails
-import ram.khab.pogodnick.model.repository.Repository
 
 class WeatherDetailViewModel(
-    private val repository: Repository
+    private val detailWeatherFetcherUseCase: DetailWeatherFetcherUseCase
 ) : ViewModel() {
 
     var dataToUi by mutableStateOf(WeatherDetails())
@@ -19,20 +20,10 @@ class WeatherDetailViewModel(
 
     fun getDetailWeather(cityName: String) {
         viewModelScope.launch {
-            repository
-                .getWeatherDetails(cityName)
+            detailWeatherFetcherUseCase
+                .execute(cityName)
                 .catch {
-                    repository
-                        .getAllWeather()
-                        .collect { listCardWeather ->
-                            listCardWeather.asFlow().filter {
-                                it.cityName == cityName
-                            }.map { card ->
-                                return@map WeatherDetails(temperatureHeader = card.howDegrease)
-                            }.collect { weatherDetaild ->
-                                dataToUi = weatherDetaild
-                            }
-                        }
+                    TODO()
                 }
                 .collect { weatherDetails ->
                     dataToUi = weatherDetails
