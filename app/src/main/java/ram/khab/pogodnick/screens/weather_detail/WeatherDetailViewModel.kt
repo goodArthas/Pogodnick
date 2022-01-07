@@ -25,7 +25,7 @@ class WeatherDetailViewModel(
                     repository
                         .getAllWeather()
                         .collect { listCardWeather ->
-                            val card = listCardWeather.asFlow().filter {
+                            listCardWeather.asFlow().filter {
                                 it.cityName == cityName
                             }.map { card ->
                                 return@map WeatherDetails(temperatureHeader = card.howDegrease)
