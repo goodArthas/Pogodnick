@@ -6,6 +6,10 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import ram.khab.pogodnick.domain.CitySaverUseCase
+import ram.khab.pogodnick.domain.RemoverCityUseCase
+import ram.khab.pogodnick.domain.UpdaterDataInWeatherCardUseCase
+import ram.khab.pogodnick.domain.WeatherCardLikeChangerUseCase
 import ram.khab.pogodnick.model.repository.Repository
 import ram.khab.pogodnick.model.repository.RepositoryImpl
 import ram.khab.pogodnick.model.repository.api.WeatherApi
@@ -20,7 +24,15 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 val mainModule = module {
-    viewModel { MainViewModel(get()) }
+    viewModel {
+        MainViewModel(
+            repository = get(),
+            removerCityUseCase = get(),
+            likeChangerUseCase = get(),
+            citySaverUseCase = get(),
+            updaterWeatherUseCase = get()
+        )
+    }
     viewModel { WeatherDetailViewModel(get()) }
 }
 
@@ -62,6 +74,29 @@ val repositoryModule = module {
     factory<RemoteDataSource> {
         RemoteDataSourceImpl(
             weatherApi = get()
+        )
+    }
+}
+
+val useCasesModule = module {
+    factory {
+        RemoverCityUseCase(
+            repository = get()
+        )
+    }
+    factory {
+        WeatherCardLikeChangerUseCase(
+            repository = get()
+        )
+    }
+    factory {
+        CitySaverUseCase(
+            repository = get()
+        )
+    }
+    factory {
+        UpdaterDataInWeatherCardUseCase(
+            repository = get()
         )
     }
 }

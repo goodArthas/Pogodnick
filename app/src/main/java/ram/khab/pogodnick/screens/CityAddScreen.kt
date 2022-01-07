@@ -16,12 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
-import kotlinx.coroutines.flow.Flow
 import ram.khab.pogodnick.R
-import ram.khab.pogodnick.model.pojo.CardWeather
-import ram.khab.pogodnick.model.pojo.WeatherDetails
-import ram.khab.pogodnick.model.repository.Repository
 import ram.khab.pogodnick.screens.main.MainViewModel
 import ram.khab.pogodnick.ui.fontDimensionResource
 import ram.khab.pogodnick.ui.theme.BlackText
@@ -33,7 +28,7 @@ const val CITY_ADD_SCREEN_NAME = "cityAddScreen"
 
 class CityAddScreen {
 
-    @Preview(showSystemUi = true, showBackground = true)
+    /*@Preview(showSystemUi = true, showBackground = true)
     @Composable
     fun PreviewScreen() {
         Screen(MainViewModel(
@@ -62,11 +57,11 @@ class CityAddScreen {
                     TODO("Not yet implemented")
                 }
 
-            }
+            },
         )) {
 
         }
-    }
+    }*/
 
     @Composable
     fun Screen(

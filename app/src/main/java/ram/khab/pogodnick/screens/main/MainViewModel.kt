@@ -10,12 +10,20 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ram.khab.pogodnick.R
+import ram.khab.pogodnick.domain.CitySaverUseCase
+import ram.khab.pogodnick.domain.RemoverCityUseCase
+import ram.khab.pogodnick.domain.UpdaterDataInWeatherCardUseCase
+import ram.khab.pogodnick.domain.WeatherCardLikeChangerUseCase
 import ram.khab.pogodnick.model.State
 import ram.khab.pogodnick.model.pojo.CardWeather
 import ram.khab.pogodnick.model.repository.Repository
 
 class MainViewModel(
-    private val repository: Repository
+    private val repository: Repository,
+    private val removerCityUseCase: RemoverCityUseCase,
+    private val likeChangerUseCase: WeatherCardLikeChangerUseCase,
+    private val citySaverUseCase: CitySaverUseCase,
+    private val updaterWeatherUseCase: UpdaterDataInWeatherCardUseCase
 ) : ViewModel() {
 
     private val _stateLiveData: MutableLiveData<State> = MutableLiveData()
@@ -44,40 +52,31 @@ class MainViewModel(
 
     fun updateWeather() {
         viewModelScope.launch {
-            repository
-                .getAllWeather()
+            updaterWeatherUseCase.execute()
                 .onStart {
                     _stateLiveData.postValue(State.Loading)
                     _isRefreshing.emit(true)
-                }
-                .map {
-                    return@map it.asFlow()
-                        .flatMapMerge { cardWeather ->
-                            repository.getWeather(cardWeather)
-                        }
-                        .toList()
                 }
                 .catch {
                     _isRefreshing.emit(false)
                     _stateLiveData.postValue(State.Error(R.string.error_update))
                     fetchDataFromDb()
-                }.collect { listCardWeather ->
+                }.collect {
                     _isRefreshing.emit(false)
-                    repository.updateWeather(listCardWeather).collect()
                     fetchDataFromDb()
                 }
         }
     }
 
-    fun updateFavoriteWeather(cardWeather: CardWeather) {
+    fun changeFavoriteInWeatherCard(cardWeather: CardWeather) {
         viewModelScope.launch {
-            repository.updateWeather(listOf(cardWeather)).collect()
+            likeChangerUseCase.execute(cardWeather).collect()
         }
     }
 
     fun deleteWeatherCard(city: CardWeather) {
         viewModelScope.launch {
-            repository.deleteWeather(city).collect()
+            removerCityUseCase.execute(city).collect()
             fetchDataFromDb()
         }
     }
@@ -86,23 +85,17 @@ class MainViewModel(
         viewModelScope.launch {
             checkExistCityInBd(cityName).collect { existCity ->
                 if (!existCity) {
-                    repository.getWeather(
-                        CardWeather(cityName = cityName, favorite = false, howDegrease = "")
-                    )
+                    citySaverUseCase.execute(cityName)
                         .onStart {
                             _stateLiveData.postValue(State.Loading)
                         }
                         .catch { exception ->
                             _stateLiveData.postValue(State.Error(R.string.error_something_wrong))
                         }
-                        .collect { cardWeather ->
+                        .collect {
                             _stateLiveData.postValue(State.Success)
-                            repository.saveCity(cardWeather).collect()
                         }
-                    repository.getAllWeather().collect { listCardWeather ->
-                        dataListToUi =
-                            listCardWeather.groupBy { it.favorite }.toSortedMap(compareBy { !it })
-                    }
+                    fetchDataFromDb()
                 } else {
                     _stateLiveData.postValue(State.Error(R.string.error_city_alraedt_exist))
                 }
@@ -117,7 +110,7 @@ class MainViewModel(
                 val card = listCardWeather.filter { cardWeather ->
                     cardWeather.cityName.lowercase() == cityName.lowercase()
                 }.firstOrNull()
-                if (card != null) emit(true) else emit(false)
+                emit(card != null)
             }
     }
 
