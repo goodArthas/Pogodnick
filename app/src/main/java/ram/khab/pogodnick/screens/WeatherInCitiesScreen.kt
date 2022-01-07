@@ -35,37 +35,37 @@ const val WEATHER_IN_CITY_SCREEN_NAME = "weatherInCitiesScreen"
 class WeatherInCitiesScreen {
 
 
-  /*  @Preview()
-    @Composable
-    fun PreViewCard() {
-        CityItem(weather = CardWeather(0, "Moscow", "-23", false), MainViewModel(object :
-            Repository {
-            override fun getWeather(cardWeather: CardWeather): Flow<CardWeather> {
-                TODO("Not yet implemented")
-            }
+    /*  @Preview()
+      @Composable
+      fun PreViewCard() {
+          CityItem(weather = CardWeather(0, "Moscow", "-23", false), MainViewModel(object :
+              Repository {
+              override fun getWeather(cardWeather: CardWeather): Flow<CardWeather> {
+                  TODO("Not yet implemented")
+              }
 
-            override fun getWeatherDetails(cityName: String): Flow<WeatherDetails> {
-                TODO("Not yet implemented")
-            }
+              override fun getWeatherDetails(cityName: String): Flow<WeatherDetails> {
+                  TODO("Not yet implemented")
+              }
 
-            override fun getAllWeather(): Flow<List<CardWeather>> {
-                TODO("Not yet implemented")
-            }
+              override fun getAllWeather(): Flow<List<CardWeather>> {
+                  TODO("Not yet implemented")
+              }
 
-            override fun deleteWeather(city: CardWeather): Flow<Int> {
-                TODO("Not yet implemented")
-            }
+              override fun deleteWeather(city: CardWeather): Flow<Int> {
+                  TODO("Not yet implemented")
+              }
 
-            override fun saveCity(cardWeather: CardWeather): Flow<Long> {
-                TODO("Not yet implemented")
-            }
+              override fun saveCity(cardWeather: CardWeather): Flow<Long> {
+                  TODO("Not yet implemented")
+              }
 
-            override fun updateWeather(cityCardWeatherList: List<CardWeather>): Flow<Int> {
-                TODO("Not yet implemented")
-            }
-        })) { path ->
-        }
-    }*/
+              override fun updateWeather(cityCardWeatherList: List<CardWeather>): Flow<Int> {
+                  TODO("Not yet implemented")
+              }
+          })) { path ->
+          }
+      }*/
 
     /* @Preview()
      @Composable
@@ -193,7 +193,9 @@ class WeatherInCitiesScreen {
                     Text(
                         text = weather.cityName,
                         fontSize = fontSize,
-                        modifier = Modifier.padding(padding)
+                        modifier = Modifier
+                            .padding(padding)
+                            .fillMaxWidth(0.7f)
                     )
                     Text(
                         text = weather.howDegrease,
