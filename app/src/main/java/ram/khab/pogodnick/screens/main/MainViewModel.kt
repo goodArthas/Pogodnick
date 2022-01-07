@@ -10,13 +10,13 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ram.khab.pogodnick.R
-import ram.khab.pogodnick.domain.CitySaverUseCase
-import ram.khab.pogodnick.domain.RemoverCityUseCase
-import ram.khab.pogodnick.domain.UpdaterDataInWeatherCardUseCase
-import ram.khab.pogodnick.domain.WeatherCardLikeChangerUseCase
-import ram.khab.pogodnick.model.State
-import ram.khab.pogodnick.model.pojo.CardWeather
-import ram.khab.pogodnick.model.repository.Repository
+import ram.khab.pogodnick.data.repository.Repository
+import ram.khab.pogodnick.domain.entities.State
+import ram.khab.pogodnick.domain.entities.pojo.CardWeather
+import ram.khab.pogodnick.domain.usecases.CitySaverUseCase
+import ram.khab.pogodnick.domain.usecases.RemoverCityUseCase
+import ram.khab.pogodnick.domain.usecases.UpdaterDataInWeatherCardUseCase
+import ram.khab.pogodnick.domain.usecases.WeatherCardLikeChangerUseCase
 
 class MainViewModel(
     private val repository: Repository,

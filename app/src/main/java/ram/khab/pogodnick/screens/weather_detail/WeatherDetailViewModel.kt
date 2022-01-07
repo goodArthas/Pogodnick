@@ -8,8 +8,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import ram.khab.pogodnick.domain.DetailWeatherFetcherUseCase
-import ram.khab.pogodnick.model.pojo.WeatherDetails
+import ram.khab.pogodnick.domain.entities.pojo.WeatherDetails
+import ram.khab.pogodnick.domain.usecases.DetailWeatherFetcherUseCase
 
 class WeatherDetailViewModel(
     private val detailWeatherFetcherUseCase: DetailWeatherFetcherUseCase

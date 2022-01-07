@@ -19,8 +19,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.rememberImagePainter
 import org.koin.androidx.compose.getViewModel
 import ram.khab.pogodnick.R
-import ram.khab.pogodnick.model.pojo.WeatherByDays
-import ram.khab.pogodnick.model.pojo.WeatherDetails
+import ram.khab.pogodnick.domain.entities.pojo.WeatherByDays
+import ram.khab.pogodnick.domain.entities.pojo.WeatherDetails
 import ram.khab.pogodnick.ui.fontDimensionResource
 import ram.khab.pogodnick.ui.theme.*
 

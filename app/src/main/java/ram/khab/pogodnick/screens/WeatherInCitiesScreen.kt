@@ -23,8 +23,8 @@ import androidx.compose.ui.res.stringResource
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import ram.khab.pogodnick.R
-import ram.khab.pogodnick.model.State
-import ram.khab.pogodnick.model.pojo.CardWeather
+import ram.khab.pogodnick.domain.entities.State
+import ram.khab.pogodnick.domain.entities.pojo.CardWeather
 import ram.khab.pogodnick.screens.main.MainViewModel
 import ram.khab.pogodnick.screens.weather_detail.WEATHER_DETAIL_SCREEN_NAME
 import ram.khab.pogodnick.ui.fontDimensionResource
