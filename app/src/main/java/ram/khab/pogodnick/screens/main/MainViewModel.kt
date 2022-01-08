@@ -29,13 +29,11 @@ class MainViewModel(
     private val _stateLiveData: MutableLiveData<State> = MutableLiveData()
     val stateLiveData: LiveData<State> = _stateLiveData
 
-    var dataListToUi by mutableStateOf(mapOf<Boolean, List<CardWeather>>())
+    var dataListToUiState by mutableStateOf(mapOf<Boolean, List<CardWeather>>())
         private set
 
     private val _isRefreshing = MutableStateFlow(false)
-
-    val isRefreshing: StateFlow<Boolean>
-        get() = _isRefreshing.asStateFlow()
+    val isRefreshing: StateFlow<Boolean> = _isRefreshing.asStateFlow()
 
 
     init {
@@ -45,7 +43,7 @@ class MainViewModel(
     private suspend fun fetchDataFromDb() {
         repository.getAllWeather()
             .collect { listCardWeather ->
-                dataListToUi =
+                dataListToUiState =
                     listCardWeather.groupBy { it.favorite }.toSortedMap(compareBy { !it })
             }
     }

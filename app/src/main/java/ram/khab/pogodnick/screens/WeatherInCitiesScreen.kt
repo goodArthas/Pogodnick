@@ -262,7 +262,7 @@ class WeatherInCitiesScreen {
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
     private fun CitiesList(mainVm: MainViewModel, navigate: (navigateTo: String) -> Unit) {
-        val uiState = mainVm.dataListToUi
+        val uiState = mainVm.dataListToUiState
         val padding = dimensionResource(id = R.dimen.padding_standard)
         val headerTextSize = fontDimensionResource(id = R.dimen.text_small_size)
         LazyColumn(
