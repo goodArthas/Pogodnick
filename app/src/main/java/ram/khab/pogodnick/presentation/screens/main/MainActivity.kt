@@ -1,9 +1,9 @@
-package ram.khab.pogodnick.screens.main
+package ram.khab.pogodnick.presentation.screens.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import ram.khab.pogodnick.ui.Navigation
+import ram.khab.pogodnick.presentation.ui.Navigation
 
 
 class MainActivity : ComponentActivity() {

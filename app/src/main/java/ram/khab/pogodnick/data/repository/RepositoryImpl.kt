@@ -1,11 +1,13 @@
 package ram.khab.pogodnick.data.repository
 
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import ram.khab.pogodnick.data.repository.local.LocalDataSource
 import ram.khab.pogodnick.data.repository.remote.RemoteDataSource
 import ram.khab.pogodnick.domain.entities.mapToCard
 import ram.khab.pogodnick.domain.entities.pojo.CardWeather
 import ram.khab.pogodnick.domain.entities.pojo.WeatherDetails
+import ram.khab.pogodnick.domain.repository.Repository
 
 class RepositoryImpl(
     private val localRepo: LocalDataSource,

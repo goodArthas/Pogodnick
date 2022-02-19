@@ -1,11 +1,11 @@
-package ram.khab.pogodnick
+package ram.khab.pogodnick.presentation
 
 import android.app.Application
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
-import ram.khab.pogodnick.di.mainModule
-import ram.khab.pogodnick.di.repositoryModule
-import ram.khab.pogodnick.di.useCasesModule
+import ram.khab.pogodnick.presentation.di.mainModule
+import ram.khab.pogodnick.presentation.di.repositoryModule
+import ram.khab.pogodnick.presentation.di.useCasesModule
 
 class MyApplication : Application() {
     override fun onCreate() {

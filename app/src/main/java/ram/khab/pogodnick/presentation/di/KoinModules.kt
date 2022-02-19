@@ -1,4 +1,4 @@
-package ram.khab.pogodnick.di
+package ram.khab.pogodnick.presentation.di
 
 import androidx.room.Room
 import okhttp3.OkHttpClient
@@ -6,7 +6,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import ram.khab.pogodnick.data.repository.Repository
 import ram.khab.pogodnick.data.repository.RepositoryImpl
 import ram.khab.pogodnick.data.repository.api.WeatherApi
 import ram.khab.pogodnick.data.repository.local.LocalDataSource
@@ -14,9 +13,10 @@ import ram.khab.pogodnick.data.repository.local.LocalDataSourceImpl
 import ram.khab.pogodnick.data.repository.remote.RemoteDataSource
 import ram.khab.pogodnick.data.repository.remote.RemoteDataSourceImpl
 import ram.khab.pogodnick.data.room.AppDatabase
+import ram.khab.pogodnick.domain.repository.Repository
 import ram.khab.pogodnick.domain.usecases.*
-import ram.khab.pogodnick.screens.main.MainViewModel
-import ram.khab.pogodnick.screens.weather_detail.WeatherDetailViewModel
+import ram.khab.pogodnick.presentation.screens.main.MainViewModel
+import ram.khab.pogodnick.presentation.screens.weather_detail.WeatherDetailViewModel
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

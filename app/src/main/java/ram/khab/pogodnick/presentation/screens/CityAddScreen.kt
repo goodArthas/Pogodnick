@@ -1,4 +1,4 @@
-package ram.khab.pogodnick.screens
+package ram.khab.pogodnick.presentation.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -17,12 +17,12 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import ram.khab.pogodnick.R
-import ram.khab.pogodnick.screens.main.MainViewModel
-import ram.khab.pogodnick.ui.fontDimensionResource
-import ram.khab.pogodnick.ui.theme.BlackText
+import ram.khab.pogodnick.presentation.screens.main.MainViewModel
+import ram.khab.pogodnick.presentation.ui.fontDimensionResource
+import ram.khab.pogodnick.presentation.ui.theme.BlackText
+import ram.khab.pogodnick.presentation.ui.theme.PogodnickTheme
+import ram.khab.pogodnick.presentation.ui.theme.Shapes
 import ram.khab.pogodnick.ui.theme.MyAppBar
-import ram.khab.pogodnick.ui.theme.PogodnickTheme
-import ram.khab.pogodnick.ui.theme.Shapes
 
 const val CITY_ADD_SCREEN_NAME = "cityAddScreen"
 

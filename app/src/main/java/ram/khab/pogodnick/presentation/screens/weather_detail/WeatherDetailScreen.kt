@@ -1,4 +1,4 @@
-package ram.khab.pogodnick.screens.weather_detail
+package ram.khab.pogodnick.presentation.screens.weather_detail
 
 
 import androidx.compose.foundation.Image
@@ -21,8 +21,12 @@ import org.koin.androidx.compose.getViewModel
 import ram.khab.pogodnick.R
 import ram.khab.pogodnick.domain.entities.pojo.WeatherByDays
 import ram.khab.pogodnick.domain.entities.pojo.WeatherDetails
-import ram.khab.pogodnick.ui.fontDimensionResource
-import ram.khab.pogodnick.ui.theme.*
+import ram.khab.pogodnick.presentation.ui.fontDimensionResource
+import ram.khab.pogodnick.presentation.ui.theme.Black
+import ram.khab.pogodnick.presentation.ui.theme.BlackText
+import ram.khab.pogodnick.presentation.ui.theme.DividerColor
+import ram.khab.pogodnick.presentation.ui.theme.PogodnickTheme
+import ram.khab.pogodnick.ui.theme.MyAppBar
 
 const val WEATHER_DETAIL_SCREEN_NAME = "weatherDetailScreen"
 

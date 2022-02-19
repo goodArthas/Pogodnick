@@ -1,4 +1,4 @@
-package ram.khab.pogodnick.screens.weather_detail
+package ram.khab.pogodnick.presentation.screens.weather_detail
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

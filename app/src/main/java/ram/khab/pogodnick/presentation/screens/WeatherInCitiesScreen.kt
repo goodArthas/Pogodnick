@@ -1,4 +1,4 @@
-package ram.khab.pogodnick.screens
+package ram.khab.pogodnick.presentation.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -15,7 +15,6 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
@@ -25,10 +24,10 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import ram.khab.pogodnick.R
 import ram.khab.pogodnick.domain.entities.State
 import ram.khab.pogodnick.domain.entities.pojo.CardWeather
-import ram.khab.pogodnick.screens.main.MainViewModel
-import ram.khab.pogodnick.screens.weather_detail.WEATHER_DETAIL_SCREEN_NAME
-import ram.khab.pogodnick.ui.fontDimensionResource
-import ram.khab.pogodnick.ui.theme.*
+import ram.khab.pogodnick.presentation.screens.main.MainViewModel
+import ram.khab.pogodnick.presentation.screens.weather_detail.WEATHER_DETAIL_SCREEN_NAME
+import ram.khab.pogodnick.presentation.ui.fontDimensionResource
+import ram.khab.pogodnick.presentation.ui.theme.*
 
 const val WEATHER_IN_CITY_SCREEN_NAME = "weatherInCitiesScreen"
 
@@ -105,7 +104,7 @@ class WeatherInCitiesScreen {
         mainVm: MainViewModel,
         navigate: (navigateTo: String) -> Unit
     ) {
-        val state = mainVm.stateLiveData.observeAsState()
+        val state = mainVm.stateLiveData
         state.value.let {
             when (it) {
                 is State.Error -> {

@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import ram.khab.pogodnick.R
+import ram.khab.pogodnick.presentation.ui.theme.PurpleBase
+import ram.khab.pogodnick.presentation.ui.theme.White
 
 @Composable
 fun MyAppBar(topAppBarText: String, backArrowPress: () -> Unit) {

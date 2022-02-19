@@ -1,4 +1,4 @@
-package ram.khab.pogodnick.screens.main
+package ram.khab.pogodnick.presentation.screens.main
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -10,9 +10,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ram.khab.pogodnick.R
-import ram.khab.pogodnick.data.repository.Repository
 import ram.khab.pogodnick.domain.entities.State
 import ram.khab.pogodnick.domain.entities.pojo.CardWeather
+import ram.khab.pogodnick.domain.repository.Repository
 import ram.khab.pogodnick.domain.usecases.CitySaverUseCase
 import ram.khab.pogodnick.domain.usecases.RemoverCityUseCase
 import ram.khab.pogodnick.domain.usecases.UpdaterDataInWeatherCardUseCase
@@ -26,7 +26,7 @@ class MainViewModel(
     private val updaterWeatherUseCase: UpdaterDataInWeatherCardUseCase
 ) : ViewModel() {
 
-    private val _stateLiveData: MutableLiveData<State> = MutableLiveData()
+    private val _stateLiveData: MutableLiveData<State> = MutableLiveData(State.Loading)
     val stateLiveData: LiveData<State> = _stateLiveData
 
     var dataListToUiState by mutableStateOf(mapOf<Boolean, List<CardWeather>>())

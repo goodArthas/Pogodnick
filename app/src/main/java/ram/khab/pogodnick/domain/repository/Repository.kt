@@ -1,4 +1,4 @@
-package ram.khab.pogodnick.data.repository
+package ram.khab.pogodnick.domain.repository
 
 import kotlinx.coroutines.flow.Flow
 import ram.khab.pogodnick.domain.entities.pojo.CardWeather

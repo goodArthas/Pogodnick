@@ -1,4 +1,4 @@
-package ram.khab.pogodnick.ui
+package ram.khab.pogodnick.presentation.ui
 
 import androidx.annotation.DimenRes
 import androidx.compose.runtime.Composable

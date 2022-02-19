@@ -1,7 +1,7 @@
 package ram.khab.pogodnick.domain.usecases
 
 import kotlinx.coroutines.flow.*
-import ram.khab.pogodnick.data.repository.Repository
+import ram.khab.pogodnick.domain.repository.Repository
 
 class UpdaterDataInWeatherCardUseCase(
     private val repository: Repository

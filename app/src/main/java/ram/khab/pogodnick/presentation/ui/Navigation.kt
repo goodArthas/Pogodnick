@@ -1,4 +1,4 @@
-package ram.khab.pogodnick.ui
+package ram.khab.pogodnick.presentation.ui
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
@@ -7,13 +7,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import org.koin.androidx.compose.getViewModel
-import ram.khab.pogodnick.screens.CITY_ADD_SCREEN_NAME
-import ram.khab.pogodnick.screens.CityAddScreen
-import ram.khab.pogodnick.screens.WEATHER_IN_CITY_SCREEN_NAME
-import ram.khab.pogodnick.screens.WeatherInCitiesScreen
-import ram.khab.pogodnick.screens.main.MainViewModel
-import ram.khab.pogodnick.screens.weather_detail.WEATHER_DETAIL_SCREEN_NAME
-import ram.khab.pogodnick.screens.weather_detail.WeatherDetailScreen
+import ram.khab.pogodnick.presentation.screens.CITY_ADD_SCREEN_NAME
+import ram.khab.pogodnick.presentation.screens.CityAddScreen
+import ram.khab.pogodnick.presentation.screens.WEATHER_IN_CITY_SCREEN_NAME
+import ram.khab.pogodnick.presentation.screens.WeatherInCitiesScreen
+import ram.khab.pogodnick.presentation.screens.main.MainViewModel
+import ram.khab.pogodnick.presentation.screens.weather_detail.WEATHER_DETAIL_SCREEN_NAME
+import ram.khab.pogodnick.presentation.screens.weather_detail.WeatherDetailScreen
 
 class Navigation {
     @Composable
