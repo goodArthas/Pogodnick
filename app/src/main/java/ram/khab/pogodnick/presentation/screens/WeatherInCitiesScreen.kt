@@ -33,72 +33,6 @@ const val WEATHER_IN_CITY_SCREEN_NAME = "weatherInCitiesScreen"
 
 class WeatherInCitiesScreen {
 
-
-    /*  @Preview()
-      @Composable
-      fun PreViewCard() {
-          CityItem(weather = CardWeather(0, "Moscow", "-23", false), MainViewModel(object :
-              Repository {
-              override fun getWeather(cardWeather: CardWeather): Flow<CardWeather> {
-                  TODO("Not yet implemented")
-              }
-
-              override fun getWeatherDetails(cityName: String): Flow<WeatherDetails> {
-                  TODO("Not yet implemented")
-              }
-
-              override fun getAllWeather(): Flow<List<CardWeather>> {
-                  TODO("Not yet implemented")
-              }
-
-              override fun deleteWeather(city: CardWeather): Flow<Int> {
-                  TODO("Not yet implemented")
-              }
-
-              override fun saveCity(cardWeather: CardWeather): Flow<Long> {
-                  TODO("Not yet implemented")
-              }
-
-              override fun updateWeather(cityCardWeatherList: List<CardWeather>): Flow<Int> {
-                  TODO("Not yet implemented")
-              }
-          })) { path ->
-          }
-      }*/
-
-    /* @Preview()
-     @Composable
-     fun PreViewScreen() {
-         Screen(MainViewModel(object :
-             Repository {
-             override fun getWeather(cardWeather: CardWeather): Flow<CardWeather> {
-                 TODO("Not yet implemented")
-             }
-
-             override fun getWeatherDetails(cityName: String): Flow<WeatherDetails> {
-                 TODO("Not yet implemented")
-             }
-
-             override fun getAllWeather(): Flow<List<CardWeather>> {
-                 TODO("Not yet implemented")
-             }
-
-             override fun deleteWeather(city: CardWeather): Flow<Int> {
-                 TODO("Not yet implemented")
-             }
-
-             override fun saveCity(cardWeather: CardWeather): Flow<Long> {
-                 TODO("Not yet implemented")
-             }
-
-             override fun updateWeather(cityCardWeatherList: List<CardWeather>): Flow<Int> {
-                 TODO("Not yet implemented")
-             }
-         })) { path ->
-         }
-     }*/
-
-
     @Composable
     fun Screen(
         mainVm: MainViewModel,
@@ -294,4 +228,3 @@ class WeatherInCitiesScreen {
         }
     }
 }
-

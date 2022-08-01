@@ -4,7 +4,9 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import ram.khab.pogodnick.domain.entities.pojo.CardWeather
 
-@Database(entities = [CardWeather::class], version = 1)
+private const val DB_VERSION = 1
+
+@Database(entities = [CardWeather::class], version = DB_VERSION)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun weatherCardDao(): WeatherCardDao
 }

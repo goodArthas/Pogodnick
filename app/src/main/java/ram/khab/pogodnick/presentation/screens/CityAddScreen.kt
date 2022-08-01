@@ -28,41 +28,6 @@ const val CITY_ADD_SCREEN_NAME = "cityAddScreen"
 
 class CityAddScreen {
 
-    /*@Preview(showSystemUi = true, showBackground = true)
-    @Composable
-    fun PreviewScreen() {
-        Screen(MainViewModel(
-            object : Repository {
-                override fun getWeather(cardWeather: CardWeather): Flow<CardWeather> {
-                    TODO("Not yet implemented")
-                }
-
-                override fun getWeatherDetails(cityName: String): Flow<WeatherDetails> {
-                    TODO("Not yet implemented")
-                }
-
-                override fun getAllWeather(): Flow<List<CardWeather>> {
-                    TODO("Not yet implemented")
-                }
-
-                override fun deleteWeather(city: CardWeather): Flow<Int> {
-                    TODO("Not yet implemented")
-                }
-
-                override fun saveCity(cardWeather: CardWeather): Flow<Long> {
-                    TODO("Not yet implemented")
-                }
-
-                override fun updateWeather(cityCardWeatherList: List<CardWeather>): Flow<Int> {
-                    TODO("Not yet implemented")
-                }
-
-            },
-        )) {
-
-        }
-    }*/
-
     @Composable
     fun Screen(
         mainViewModel: MainViewModel,
@@ -130,7 +95,4 @@ class CityAddScreen {
             label = { Text(stringResource(id = R.string.enter_city_name)) }
         )
     }
-
 }
-
-

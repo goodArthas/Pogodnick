@@ -12,7 +12,9 @@ class RemoverCityUseCase(
     fun execute(city: CardWeather): Flow<Boolean> = flow {
         repository.deleteWeather(city)
             .collect { removeRowCount ->
-                emit(removeRowCount >= 1)
+                emit(isRemoveSuccessful(removeRowCount))
             }
     }
+
+    private fun isRemoveSuccessful(removeRowCount: Int) = removeRowCount >= 1
 }

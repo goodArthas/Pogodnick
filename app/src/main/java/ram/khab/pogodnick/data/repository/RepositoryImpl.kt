@@ -4,10 +4,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ram.khab.pogodnick.data.repository.local.LocalDataSource
 import ram.khab.pogodnick.data.repository.remote.RemoteDataSource
-import ram.khab.pogodnick.domain.entities.mapToCard
 import ram.khab.pogodnick.domain.entities.pojo.CardWeather
 import ram.khab.pogodnick.domain.entities.pojo.WeatherDetails
 import ram.khab.pogodnick.domain.repository.Repository
+import ram.khab.pogodnick.domain.util.mapToCard
 
 class RepositoryImpl(
     private val localRepo: LocalDataSource,
@@ -34,5 +34,4 @@ class RepositoryImpl(
 
     override fun updateWeather(cityCardWeatherList: List<CardWeather>): Flow<Int> =
         localRepo.updateWeather(cityCardWeatherList)
-
 }

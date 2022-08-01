@@ -10,6 +10,10 @@ import ram.khab.pogodnick.presentation.di.useCasesModule
 class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
+        startDI()
+    }
+
+    private fun startDI() {
         startKoin {
             androidContext(applicationContext)
             modules(mainModule, repositoryModule, useCasesModule)

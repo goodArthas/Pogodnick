@@ -1,4 +1,4 @@
-package ram.khab.pogodnick.domain.entities
+package ram.khab.pogodnick.domain.util
 
 import ram.khab.pogodnick.domain.entities.pojo.CardWeather
 import ram.khab.pogodnick.domain.entities.pojo.WeatherByDays
@@ -63,15 +63,18 @@ fun WeatherMain.mapToWeatherDetails(): WeatherDetails {
 
 private fun Double.weatherFormat(): String = Math.round(this).toString()
 
+private const val YEAR_MONTH_DAY_FULL_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss"
+private const val DAY_MONTH_TIME_FORMAT = "dd.MM"
+
 private fun String.timeFormat(): String {
-    val parser = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-    val formatter = SimpleDateFormat("dd.MM")
+    val parser = SimpleDateFormat(YEAR_MONTH_DAY_FULL_TIME_FORMAT)
+    val formatter = SimpleDateFormat(DAY_MONTH_TIME_FORMAT)
     val output = formatter.format(parser.parse(this))
     return output
 }
 
 private fun Int.windDirection(): String {
     val directionsArray = arrayOf("C", "CВ", "В", "ЮВ", "Ю", "ЮЗ", "З", "СЗ")
-    val direction = (this * 8 / 360)
-    return directionsArray[direction]
+    val directionFormula = (this * 8 / 360)
+    return directionsArray[directionFormula]
 }

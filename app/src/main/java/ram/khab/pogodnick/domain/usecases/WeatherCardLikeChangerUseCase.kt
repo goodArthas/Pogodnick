@@ -10,8 +10,11 @@ class WeatherCardLikeChangerUseCase(
     private val repository: Repository
 ) {
     fun execute(cardWeather: CardWeather): Flow<Boolean> = flow {
-        repository.updateWeather(listOf(cardWeather)).collect { updateRowCount ->
-            emit(updateRowCount >= 1)
-        }
+        repository.updateWeather(listOf(cardWeather))
+            .collect { updateRowCount ->
+                emit(isUpdateSuccessful(updateRowCount))
+            }
     }
+
+    private fun isUpdateSuccessful(updateRowCount: Int) = updateRowCount >= 1
 }

@@ -12,21 +12,24 @@ class DetailWeatherFetcherUseCase(
         repository
             .getWeatherDetails(cityName)
             .catch {
-                repository
-                    .getAllWeather()
-                    .collect { listCardWeather ->
-                        listCardWeather.asFlow().filter {
-                            it.cityName == cityName
-                        }.map { card ->
-                            return@map WeatherDetails(temperatureHeader = card.howDegrease)
-                        }.collect { weatherDetail ->
-                            emit(weatherDetail)
-                        }
-                    }
+                emitDetailsFromAnotherSource(cityName)
             }
             .collect { weatherDetails ->
                 emit(weatherDetails)
             }
     }
 
+    private suspend fun FlowCollector<WeatherDetails>.emitDetailsFromAnotherSource(cityName: String) {
+        repository
+            .getAllWeather()
+            .collect { listCardWeather ->
+                listCardWeather.filter { cardWeather ->
+                    cardWeather.cityName == cityName
+                }.map { card ->
+                    return@map WeatherDetails(temperatureHeader = card.howDegrease)
+                }.asFlow().collect { weatherDetail ->
+                    emit(weatherDetail)
+                }
+            }
+    }
 }

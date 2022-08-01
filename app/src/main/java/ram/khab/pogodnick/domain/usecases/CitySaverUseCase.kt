@@ -11,12 +11,12 @@ class CitySaverUseCase(
 ) {
 
     fun execute(cityName: String): Flow<Boolean> = flow {
-        repository.getWeather(
-            CardWeather(cityName = cityName, favorite = false, howDegrease = "")
-        )
+        repository.getWeather(getCardWeatherDefault(cityName))
             .collect { cardWeather ->
                 repository.saveCity(cardWeather).collect()
             }
     }
 
+    private fun getCardWeatherDefault(cityName: String) =
+        CardWeather(cityName = cityName, favorite = false, howDegrease = "")
 }

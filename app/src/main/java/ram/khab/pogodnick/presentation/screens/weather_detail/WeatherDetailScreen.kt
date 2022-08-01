@@ -14,13 +14,17 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.rememberImagePainter
+import org.koin.androidx.compose.get
 import org.koin.androidx.compose.getViewModel
+import org.koin.core.qualifier.named
 import ram.khab.pogodnick.R
 import ram.khab.pogodnick.domain.entities.pojo.WeatherByDays
 import ram.khab.pogodnick.domain.entities.pojo.WeatherDetails
+import ram.khab.pogodnick.presentation.di.IMAGE_SAVE_PATH_KEY
 import ram.khab.pogodnick.presentation.ui.fontDimensionResource
 import ram.khab.pogodnick.presentation.ui.theme.Black
 import ram.khab.pogodnick.presentation.ui.theme.BlackText
@@ -29,43 +33,9 @@ import ram.khab.pogodnick.presentation.ui.theme.PogodnickTheme
 import ram.khab.pogodnick.ui.theme.MyAppBar
 
 const val WEATHER_DETAIL_SCREEN_NAME = "weatherDetailScreen"
+private const val IMAGE_FILE_FORMAT = ".png"
 
 class WeatherDetailScreen {
-
-    /*@Preview(showSystemUi = true, showBackground = true)
-    @Composable
-    fun PreviewScreen() {
-        Screen(
-            "Mockva", WeatherDetailViewModel(object : Repository {
-                override fun getWeather(cardWeather: CardWeather): Flow<CardWeather> {
-                    TODO("Not yet implemented")
-                }
-
-                override fun getWeatherDetails(cityName: String): Flow<WeatherDetails> {
-                    TODO("Not yet implemented")
-                }
-
-                override fun getAllWeather(): Flow<List<CardWeather>> {
-                    TODO("Not yet implemented")
-                }
-
-                override fun deleteWeather(city: CardWeather): Flow<Int> {
-                    TODO("Not yet implemented")
-                }
-
-                override fun saveCity(cardWeather: CardWeather): Flow<Long> {
-                    TODO("Not yet implemented")
-                }
-
-                override fun updateWeather(cityCardWeatherList: List<CardWeather>): Flow<Int> {
-                    TODO("Not yet implemented")
-                }
-
-            })
-        ) {
-
-        }
-    }*/
 
     @Preview()
     @Composable
@@ -113,13 +83,10 @@ class WeatherDetailScreen {
                     modifier = Modifier.padding(start = paddingStandard),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Image(
-                        painter = rememberImagePainter(getWeatherIconUrl(weatherDetail.weatherHeaderIconUrl)),
-                        contentDescription = weatherDetail.weatherHeaderIconDescription,
-                        Modifier.size(
-                            dimensionResource(id = R.dimen.icon_size_large)
-                        )
-                    )
+                    val iconName = weatherDetail.weatherHeaderIconUrl
+                    val iconDescription = weatherDetail.weatherHeaderIconDescription
+                    val iconSize = dimensionResource(id = R.dimen.icon_size_large)
+                    ImageInColumn(iconName, iconDescription, iconSize)
                     Text(
                         text = weatherDetail.temperatureHeader,
                         fontSize = fontDimensionResource(id = R.dimen.text_medium_size)
@@ -266,16 +233,20 @@ class WeatherDetailScreen {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = dateText, fontSize = textSize)
-            Image(
-                painter = rememberImagePainter(getWeatherIconUrl(iconUrlText)),
-                contentDescription = iconUrlDescription,
-                Modifier.size(icon3daySize)
-            )
+            ImageInColumn(iconUrlText, iconUrlDescription, icon3daySize)
             val temperature = "${temperatureText} ${stringResource(id = R.string.celsius)}"
             Text(text = temperature, fontSize = textSize)
         }
     }
 
-    private fun getWeatherIconUrl(iconId: String) =
-        "https://openweathermap.org/img/wn/${iconId}.png"
+    @Composable
+    private fun ImageInColumn(iconName: String, iconUrlDescription: String, iconSize: Dp) {
+        val iconPathUrl = get<String>(named(IMAGE_SAVE_PATH_KEY))
+        val iconFullName = "$iconPathUrl$iconName$IMAGE_FILE_FORMAT"
+        Image(
+            painter = rememberImagePainter(iconFullName),
+            contentDescription = iconUrlDescription,
+            Modifier.size(iconSize)
+        )
+    }
 }

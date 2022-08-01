@@ -17,5 +17,4 @@ interface WeatherCardDao {
 
     @Update
     suspend fun update(cityCardWeatherList: List<CardWeather>): Int
-
 }

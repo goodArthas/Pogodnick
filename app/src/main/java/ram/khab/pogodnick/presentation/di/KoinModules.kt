@@ -38,14 +38,22 @@ val mainModule = module {
 
 }
 
+const val IMAGE_SAVE_PATH_KEY = "image_save_key"
+private const val IMAGE_SAVE_PATH_VALUE = "https://openweathermap.org/img/wn/"
+
+private const val BASE_URL_KEY = "base_url"
+private const val BASE_URL_VALUE = "https://api.openweathermap.org/"
+private const val DATA_BASE_NAME = "database-weather"
+
 val repositoryModule = module {
-    factory(named("base_url")) { "https://api.openweathermap.org/" }
+    factory(named(BASE_URL_KEY)) { BASE_URL_VALUE }
+    single(named(IMAGE_SAVE_PATH_KEY)) { IMAGE_SAVE_PATH_VALUE }
 
     single<AppDatabase> {
         Room.databaseBuilder(
             get(),
             AppDatabase::class.java,
-            "database-weather"
+            DATA_BASE_NAME
         ).build()
     }
     single<LocalDataSource> {

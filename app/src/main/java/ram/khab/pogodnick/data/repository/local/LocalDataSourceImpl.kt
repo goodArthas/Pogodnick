@@ -6,7 +6,7 @@ import ram.khab.pogodnick.data.room.AppDatabase
 import ram.khab.pogodnick.domain.entities.pojo.CardWeather
 
 class LocalDataSourceImpl(
-    private val database: AppDatabase
+    database: AppDatabase
 ) : LocalDataSource {
 
     private val dao = database.weatherCardDao()
@@ -23,6 +23,5 @@ class LocalDataSourceImpl(
 
     override fun updateWeather(cityCardWeatherList: List<CardWeather>): Flow<Int> =
         flow { emit(dao.update(cityCardWeatherList)) }
-
 
 }

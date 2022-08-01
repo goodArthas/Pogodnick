@@ -40,30 +40,42 @@ class MainViewModel(
         updateWeather()
     }
 
-    private suspend fun fetchDataFromDb() {
+    private suspend fun showDataFromDb() {
         repository.getAllWeather()
             .collect { listCardWeather ->
-                dataListToUiState =
-                    listCardWeather.groupBy { it.favorite }.toSortedMap(compareBy { !it })
+                dataListToUiState = groupingAndSortingWeatherList(listCardWeather)
             }
     }
+
+    private fun groupingAndSortingWeatherList(listCardWeather: List<CardWeather>) =
+        listCardWeather
+            .groupBy { it.favorite }
+            .toSortedMap(compareBy { !it })
 
     fun updateWeather() {
         viewModelScope.launch {
             updaterWeatherUseCase.execute()
                 .onStart {
-                    _stateLiveData.postValue(State.Loading)
-                    _isRefreshing.emit(true)
+                    showLoadingState()
+                    showRefreshing(true)
                 }
                 .catch {
-                    _isRefreshing.emit(false)
-                    _stateLiveData.postValue(State.Error(R.string.error_update))
-                    fetchDataFromDb()
+                    showRefreshing(false)
+                    showError()
+                    showDataFromDb()
                 }.collect {
-                    _isRefreshing.emit(false)
-                    fetchDataFromDb()
+                    showRefreshing(false)
+                    showDataFromDb()
                 }
         }
+    }
+
+    private fun showError() {
+        _stateLiveData.postValue(State.Error(R.string.error_update))
+    }
+
+    private suspend fun showRefreshing(state: Boolean) {
+        _isRefreshing.emit(state)
     }
 
     fun changeFavoriteInWeatherCard(cardWeather: CardWeather) {
@@ -75,30 +87,40 @@ class MainViewModel(
     fun deleteWeatherCard(city: CardWeather) {
         viewModelScope.launch {
             removerCityUseCase.execute(city).collect()
-            fetchDataFromDb()
+            showDataFromDb()
         }
     }
 
     fun saveCity(cityName: String) {
         viewModelScope.launch {
-            checkExistCityInBd(cityName).collect { existCity ->
-                if (!existCity) {
-                    citySaverUseCase.execute(cityName)
-                        .onStart {
-                            _stateLiveData.postValue(State.Loading)
-                        }
-                        .catch { exception ->
-                            _stateLiveData.postValue(State.Error(R.string.error_something_wrong))
-                        }
-                        .collect {
-                            _stateLiveData.postValue(State.Success)
-                        }
-                    fetchDataFromDb()
-                } else {
+            checkExistCityInBd(cityName).collect { isCityAlreadyExist ->
+                if (isCityAlreadyExist) {
                     _stateLiveData.postValue(State.Error(R.string.error_city_alraedt_exist))
+                } else {
+                    saveAndShowNewWeatherList(cityName)
                 }
             }
         }
+    }
+
+    private suspend fun saveAndShowNewWeatherList(
+        cityName: String
+    ) {
+        citySaverUseCase.execute(cityName)
+            .onStart {
+                showLoadingState()
+            }
+            .catch {
+                _stateLiveData.postValue(State.Error(R.string.error_something_wrong))
+            }
+            .collect {
+                _stateLiveData.postValue(State.Success)
+            }
+        showDataFromDb()
+    }
+
+    private fun showLoadingState() {
+        _stateLiveData.postValue(State.Loading)
     }
 
     private fun checkExistCityInBd(cityName: String): Flow<Boolean> = flow {
@@ -111,5 +133,4 @@ class MainViewModel(
                 emit(card != null)
             }
     }
-
 }
